@@ -6,8 +6,11 @@ Brooke Czerwinski
 Nicholas Muller
 
 
+<<<<<<< HEAD
 Note from Brooke: I'm no expert in git, so if there are improvements to this method we can implement, let's fix it up!
 
+=======
+>>>>>>> 429fe811cc7b384a66180d06d8201268c95204f3
 To get started
 1. Make folder on linux server
 2. Clone repo to the folder
@@ -24,6 +27,7 @@ To get started
 7. Commit changes
         git commit -m 'quick message for commit'
 8. Push changes
+<<<<<<< HEAD
         git push
 9. Create a pull request through the browser on github
         - Go to the "pull requests" tab in github: https://github.com/CzerPDX/agile6/compare/main...brooke
@@ -45,3 +49,6 @@ This will make sure that you're always up to date. You may need to merge and res
 When you want to push
 1. Add the files you want to push (below command will add everything but you can add specific ones instead if you want)
         git add . 
+=======
+        git push
+>>>>>>> 429fe811cc7b384a66180d06d8201268c95204f3
