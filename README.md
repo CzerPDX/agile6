@@ -51,3 +51,8 @@ When you want to push
 3. Push changes
         git push
 4. Make a pull request as above in the getting started section
+
+
+
+To compile project:
+$ python3 ftp-client.py
