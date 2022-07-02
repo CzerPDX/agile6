@@ -8,7 +8,7 @@ import logging
 
 if __name__ == "__main__":
     # Sets up logging. Uses filemode 'a' so it appends to the existing log instead of overwriting
-    logging.basicConfig(filename='input-and-errors.log', filemode='a', level=logging.DEBUG)
+    logging.basicConfig(filename='input-and-errors.log', filemode='a')
 
     # display menu
     prompt = """
