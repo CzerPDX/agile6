@@ -1,14 +1,17 @@
 import logging
 
 # References:
-# Imitate switch/case in python (pre-3.10): https://stackoverflow.com/questions/60208/replacements-for-switch-statement-in-python
-# python dictionaries: https://www.w3schools.com/python/python_dictionaries.asp
+# FTPlib documentation: https://docs.python.org/3/library/ftplib.html
+# Logging documentation: https://docs.python.org/3/library/logging.html
+#                        https://docs.python.org/3/howto/logging.html
 # how to make strings span multiple lines: https://www.tutorialspoint.com/triple-quotes-in-python
 
 
 if __name__ == "__main__":
-    # Sets up logging. Uses filemode 'a' so it appends to the existing log instead of overwriting
-    logging.basicConfig(filename='input-and-errors.log', filemode='a')
+    # Sets up logging. 
+    # Uses filemode 'a' so it appends to the existing log instead of overwriting
+    # Logging level: anything below the set logging level will be ignored. So it's a logging threshold
+    logging.basicConfig(filename='input-and-errors.log', filemode='a', level=logging.DEBUG)
 
     # display menu
     prompt = """
@@ -31,6 +34,7 @@ if __name__ == "__main__":
     logging.info(opt)
 
     print()
+    
     
     # Process user output
     # Note: we log all input
