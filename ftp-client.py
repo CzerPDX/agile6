@@ -17,6 +17,7 @@ def loginSecure(ftpAddr, usr):
     # log into ftp server and return the login response from the server
     try:
         resp = ftp.login(user=usr, passwd=input("enter pw: "))
+        logging.info(resp)
     # if an error occurs, return the error
     except Exception as err:
         resp = err
