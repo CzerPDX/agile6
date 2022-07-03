@@ -10,24 +10,17 @@ from ftplib import FTP
 def loginSecure(ftpAddr, usr):
     # Connect to ftp server
     ftp = FTP(ftpAddr)
-<<<<<<< HEAD
 
     # log ftpAddr and username to log
     logging.info("Attempted login: " + ftpAddr + ", " + usr)
 
-=======
-    
->>>>>>> ab9301765812dac3b1ece0058169147f2122adc7
     # log into ftp server and return the login response from the server
     try:
         resp = ftp.login(user=usr, passwd=input("enter pw: "))
     # if an error occurs, return the error
     except Exception as err:
         resp = err
-<<<<<<< HEAD
         logging.error(err)
-=======
->>>>>>> ab9301765812dac3b1ece0058169147f2122adc7
 
     return resp
 
