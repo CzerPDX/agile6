@@ -1,10 +1,24 @@
 import logging
+from ftplib import FTP
 
 # References:
 # FTPlib documentation: https://docs.python.org/3/library/ftplib.html
 # Logging documentation: https://docs.python.org/3/library/logging.html
 #                        https://docs.python.org/3/howto/logging.html
 # how to make strings span multiple lines: https://www.tutorialspoint.com/triple-quotes-in-python
+
+def loginSecure(ftpAddr, usr):
+    # Connect to ftp server
+    ftp = FTP(ftpAddr)
+    
+    # log into ftp server and return the login response from the server
+    try:
+        resp = ftp.login(user=usr, passwd=input("enter pw: "))
+    # if an error occurs, return the error
+    except Exception as err:
+        resp = err
+
+    return resp
 
 
 if __name__ == "__main__":
@@ -39,7 +53,10 @@ if __name__ == "__main__":
     # Process user output
     # Note: we log all input
     if opt == "1":
-        print("you chose 1")
+        # log into ftp and print 
+        ftpAddr = 'ftptest.portlandredbird.com'
+        usr = 'testacct@ftptest.portlandredbird.com'
+        print(loginSecure(ftpAddr, usr))
     elif opt == "2":
         print("you chose 2")
     elif opt == "3":
