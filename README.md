@@ -9,6 +9,37 @@ John Pham
 
 Note from Brooke: I'm no expert in git, so if there are improvements to this method we can implement, let's fix it up!
 
+
+# For every user story card:
+
+1. **Go to the main repo and create a new branch from staging (not main)**<br>
+    - https://github.com/CzerPDX/agile6/branches
+
+2. **Switch to your branch on the Linux server**
+    - git checkout [BRANCH NAME]
+
+3. **Check that you're on the new branch**
+    - git branch
+
+4. **Make your changes**
+
+5. **Push your changes to your branch**
+    - git add .
+    - git commit -m 'message describing commit'
+    - git push
+
+
+
+
+
+To compile project:
+$ python3 ftp-client.py
+
+<hr>
+
+### Old stuff below this line (ignore for now)
+
+
 To get started
 1. Make folder on linux server
 2. Clone repo to the folder
@@ -37,22 +68,3 @@ To get started
         - Click "Squash and Merge"
         - Click "Confirm Squash and Merge"
 
-
-When you start programming always begin by typing:
-        git pull origin main
-
-This will make sure that you're always up to date. You may need to merge and resolve conflicts within your IDE when you do this, but doing they will always need to be resolved and this method will make those conflicts smaller and more manageable.
-
-When you want to push
-1. Add the files you want to push (below command will add everything but you can add specific ones instead if you want)
-        git add . 
-2. Make a commit with a message
-        git commit -m 'your message for commit'
-3. Push changes
-        git push
-4. Make a pull request as above in the getting started section
-
-
-
-To compile project:
-$ python3 ftp-client.py
