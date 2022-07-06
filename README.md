@@ -12,7 +12,7 @@ Note from Brooke: I'm no expert in git, so if there are improvements to this met
 
 # For every user story card:
 
-1. **Go to the main repo and create a new branch from staging (not main)**<br>
+1. **Go to the main repo and create a new branch**<br>
     - https://github.com/CzerPDX/agile6/branches
 
 2. **Switch to your branch on the Linux server**
