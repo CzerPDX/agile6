@@ -29,42 +29,26 @@ Note from Brooke: I'm no expert in git, so if there are improvements to this met
     - git push
 
 
+## When you're ready to merge your branch with staging
+
+1. **Submit a PR between staging and your branch**
+    - go to the main repo https://github.com/CzerPDX/agile6
+    - There should be a "Compare & pull request" button. 
+      - Click it if it's there
+      - If it's not there
+        - Click "pull requests" at the top under the repo name
+        - Click the green "New pull request" button on the right
+    - For the left dropdown, choose staging
+    - For the right dropdown, choose your branch you created
+    - Then click "create pull request"
+    - Then click "create pull request" again lol
+    - It will check to see if it can be merged.
+      - If it can, click "squash and merge"
+      - If it can't
+        - Resolve the conflicts
+        - Then click "squash and merge"
 
 
 
 To compile project:
 $ python3 ftp-client.py
-
-<hr>
-
-### Old stuff below this line (ignore for now)
-
-
-To get started
-1. Make folder on linux server
-2. Clone repo to the folder
-        git clone https://github.com/CzerPDX/agile6.git
-3. pull
-        git pull
-4. Switch to your branch
-        git checkout [your first name lowercase]
-5. Pull from origin
-        git pull origin main
-6. Open the README.md and add your name to the list
-7. Add files
-        git add .
-7. Commit changes
-        git commit -m 'quick message for commit'
-8. Push changes
-        git push
-9. Create a pull request through the browser on github
-        - Go to the "pull requests" tab in github: https://github.com/CzerPDX/agile6/compare/main...brooke
-        - Under "comparing changes" choose "main" for the first dropdown and your repo for the second dropdown
-        - Click "create pull request"
-        - Click "create pull request" again
-        - It will check for merge-ability here.
-              - Resolve conflicts if necessary (edit the document as needed then click "mark as resolved" at the top left)
-              - Commit merge
-        - Click "Squash and Merge"
-        - Click "Confirm Squash and Merge"
-
