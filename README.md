@@ -29,7 +29,8 @@ Note from Brooke: I'm no expert in git, so if there are improvements to this met
     - git push
 
 
-## When you're ready to merge your branch with staging
+## When you finish working on a user story
+merge your branch with staging and delete it
 
 1. **Submit a PR between staging and your branch**
     - go to the main repo https://github.com/CzerPDX/agile6
@@ -47,6 +48,9 @@ Note from Brooke: I'm no expert in git, so if there are improvements to this met
       - If it can't
         - Resolve the conflicts
         - Then click "squash and merge"
+    - Delete the branch
+      - Where it says "Pull request successfully merged" and "branch can be safely deleted" click "delete branch"
+      
 
 
 
