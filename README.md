@@ -5,6 +5,7 @@ Group 6 members (add your name when you have access):
 Brooke Czerwinski
 Nicholas Muller
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 Jake Strong
 John Pham
@@ -16,6 +17,13 @@ Note from Brooke: I'm no expert in git, so if there are improvements to this met
 // This is just a test comment to test the repository (can be deleted at any time)
 double test hello
 =======
+=======
+Jake Strong
+John Pham
+
+Note from Brooke: I'm no expert in git, so if there are improvements to this method we can implement, let's fix it up!
+
+>>>>>>> 32583658b6f650c72c69a2d2bd10955fbaf12f7c
 
 # For every user story card:
 
@@ -64,5 +72,9 @@ merge your branch with staging and delete it
 <hr>
 
 ## To compile project:
+<<<<<<< HEAD
+$ python3 ftp-client.py
+>>>>>>> 32583658b6f650c72c69a2d2bd10955fbaf12f7c
+=======
 $ python3 ftp-client.py
 >>>>>>> 32583658b6f650c72c69a2d2bd10955fbaf12f7c

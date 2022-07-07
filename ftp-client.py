@@ -4,7 +4,10 @@ from ftplib import FTP
 ########################################
 # Add includes here for your files
 import login            # 1. Log into remote server
+<<<<<<< HEAD
 import listLocalDir
+=======
+>>>>>>> 32583658b6f650c72c69a2d2bd10955fbaf12f7c
 
 ########################################
 
@@ -91,7 +94,10 @@ if __name__ == "__main__":
     elif opt == "8":
         # 8.  List directories & files on  local machine
         print("you chose 8")
+<<<<<<< HEAD
         listLocalDir.listLocal()
+=======
+>>>>>>> 32583658b6f650c72c69a2d2bd10955fbaf12f7c
     elif opt == "9":
         # 9.  Put file onto remote server
         print("you chose 9")
