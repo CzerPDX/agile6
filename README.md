@@ -12,10 +12,11 @@ Note from Brooke: I'm no expert in git, so if there are improvements to this met
 
 # For every user story card:
 
-1. **Go to the main repo and create a new branch from staging (not main)**<br>
+1. **Go to the main repo and create a new branch**<br>
     - https://github.com/CzerPDX/agile6/branches
 
 2. **Switch to your branch on the Linux server**
+    - git pull
     - git checkout [BRANCH NAME]
 
 3. **Check that you're on the new branch**
@@ -28,6 +29,7 @@ Note from Brooke: I'm no expert in git, so if there are improvements to this met
     - git commit -m 'message describing commit'
     - git push
 
+<hr>
 
 ## When you finish working on a user story
 merge your branch with staging and delete it
@@ -52,7 +54,7 @@ merge your branch with staging and delete it
       - Where it says "Pull request successfully merged" and "branch can be safely deleted" click "delete branch"
       
 
+<hr>
 
-
-To compile project:
+## To compile project:
 $ python3 ftp-client.py
