@@ -1,20 +1,21 @@
 import logging
 from ftplib import FTP
 
-def loginSecure(ftpAddr, usr):
-    # Connect to ftp server
-    ftp = FTP(ftpAddr)
-
+# Returns a tuple of (bool, string)
+# If success it will be: (True, welcomeMessage, ftp object)
+# If failure it will be: (False, Error message)
+def login-secure(ftpAddr, usr, ftp):
     # log ftpAddr and username to log
     logging.info("Attempted login: " + ftpAddr + ", " + usr)
 
     # log into ftp server and return the login response from the server
     try:
-        resp = ftp.login(user=usr, passwd=input("enter pw: "))
+        ftp.login(user=usr, passwd=input("enter pw: "))
+        resp = (True, ftp.getwelcome(), ftp)
         logging.info(resp)
     # if an error occurs, return the error
     except Exception as err:
-        resp = err
+        resp = (False, err)
         logging.error(err)
 
     return resp
