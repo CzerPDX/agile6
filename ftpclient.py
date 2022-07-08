@@ -6,11 +6,7 @@ from ftplib import FTP
 # Add includes here for your files
 import takeinput                # Take input from user (log and check for blank input)
 import connectftp               # Connect to remote server
-
-import loginsecure              # 1. Log into remote server
-
-
-########################################
+import loginsecure              # Log into remote server
 
 # References:
 # FTPlib documentation: https://docs.python.org/3/library/ftplib.html
@@ -40,27 +36,26 @@ def postLoginMenu(ftp, welcomeMessage):
 
     # Create a menu prompt string
     prompt = welcomeMessage + """
-=========================
 
-1.  Log off
+1.  List directories & files on remote server
+2.  Get file from remote server
+3.  Log off from remote server
+4.  Get multiple
+5.  List directories & files on local machine
+6.  Put file onto remote server
+7.  Put multiple
+8.  Create directory on remote server
+9. Delete file from remote server
+10. Change permissions on remote server
+11. Copy directories on remote server
+12. Delete directories on remote server
+13. Save connection information
+14. Use saved connection information to connect
+15. Rename file on remote server
+16. Timeout after idle time
+17. Log history
 
-2.  List directories & files on remote server
-3.  Get file from remote server
-4.  Log off from remote server
-5.  Get multiple
-6.  List directories & files on  local machine
-7.  Put file onto remote server
-8.  Put multiple
-9.  Create directory on remote server
-10. Delete file from remote server
-11. Change permissions on remote server
-12. Copy directories on remote server
-13. Delete directories on remote server
-14. Save connection information
-15. Use saved connection information to connect
-16. Rename file on remote server
-17. Timeout after idle time
-18. Log history
+Q.  Log off
 
 Enter your choice: 
     """
@@ -78,79 +73,86 @@ Enter your choice:
         # If user input was empty it will contain: (False, errorMsg)
         opt = takeinput.takeInput(prompt)
         
-        ####### Note: log all input using takeinput.takeInput(prompt) function
-        #1.  Log off
+
+        ####################################################
+        # Add your function calls below
+        
+        # 1.  List directories & files on remote server
         if opt[1] == "1":
+            print("You chose " + opt[1])
+        # 2.  Get file from remote server
+        elif opt[1] == "2":
+            print("You chose " + opt[1])
+        # 3.  Log off from remote server
+        elif opt[1] == "3":
+            print("You chose " + opt[1])
+        # 4.  Get multiple
+        elif opt[1] == "4":
+            print("You chose " + opt[1])
+        # 5.  List directories & files on  local machine
+        elif opt[1] == "5":
+            print("You chose " + opt[1])
+        # 6.  Put file onto remote server
+        elif opt[1] == "6":
+            print("You chose " + opt[1])
+        # 7.  Put multiple
+        elif opt[1] == "7":
+            print("You chose " + opt[1])
+        # 8.  Create directory on remote server
+        elif opt[1] == "8":
+            print("You chose " + opt[1])
+        # 9. Delete file from remote server
+        elif opt[1] == "9":
+            print("You chose " + opt[1])
+        # 10. Change permissions on remote server
+        elif opt[1] == "10":
+            print("You chose " + opt[1])
+        # 11. Copy directories on remote server
+        elif opt[1] == "11":
+            print("You chose " + opt[1])
+        # 12. Delete directories on remote server
+        elif opt[1] == "12":
+            print("You chose " + opt[1])
+        # 13. Save connection information
+        elif opt[1] == "13":
+            print("You chose " + opt[1])
+        # 14. Use saved connection information to connect
+        elif opt[1] == "14":
+            print("You chose " + opt[1])
+        # 15. Rename file on remote server
+        elif opt[1] == "15":
+            print("You chose " + opt[1])
+        # 16. Timeout after idle time
+        elif opt[1] == "16":
+            print("You chose " + opt[1])
+        # 17. Log history
+        elif opt[1] == "17":
+            print("You chose " + opt[1])
+        #Q.  Log off
+        elif opt[1].lower() == "q":
             print("Logging out...")
             print()
             # Call logout function here
             logout = True
-        # 2.  List directories & files on remote server
-        elif opt[1] == "2":
-            print("You chose " + opt[1])
-        # 3.  Get file from remote server
-        elif opt[1] == "3":
-            pint("You chose " + opt[1])
-        # 4.  Log off from remote server
-        elif opt[1] == "4":
-            print("You chose " + opt[1])
-        # 5.  Get multiple
-        elif opt[1] == "5":
-            print("You chose " + opt[1])
-        # 6.  List directories & files on  local machine
-        elif opt[1] == "6":
-            print("You chose " + opt[1])
-        # 7.  Put file onto remote server
-        elif opt[1] == "7":
-            print("You chose " + opt[1])
-        # 8.  Put multiple
-        elif opt[1] == "8":
-            print("You chose " + opt[1])
-        # 9.  Create directory on remote server
-        elif opt[1] == "9":
-            print("You chose " + opt[1])
-        # 10. Delete file from remote server
-        elif opt[1] == "10":
-            print("You chose " + opt[1])
-        # 11. Change permissions on remote server
-        elif opt[1] == "11":
-            print("You chose " + opt[1])
-        # 12. Copy directories on remote server
-        elif opt[1] == "12":
-            print("You chose " + opt[1])
-        # 13. Delete directories on remote server
-        elif opt[1] == "13":
-            print("You chose " + opt[1])
-        # 14. Save connection information
-        elif opt[1] == "14":
-            print("You chose " + opt[1])
-        # 15. Use saved connection information to connect
-        elif opt[1] == "15":
-            print("You chose " + opt[1])
-        # 16. Rename file on remote server
-        elif opt[1] == "16":
-            print("You chose " + opt[1])
-        # 17. Timeout after idle time
-        elif opt[1] == "17":
-            print("You chose " + opt[1])
-        # 18. Log history
-        elif opt[1] == "18":
-            print("You chose " + opt[1])
         # Otherwise input will be in error
         else:
-            invalidMenuInput(opt[1])
+            invalidMenuInput(opt)
 
 
-# Menu for connected but not logged in
+
+# Menu for anonymous connection (connected but not logged in)
 def connectedAnonMenu(ftp, ftpAddr):
     # Option input tuple
     opt = (True, "")
 
     while (opt[1].lower() != "q"):
         # display menu
-        prompt = "Annonymously connected to: " + ftpAddr + """
-==========================
+        prompt = ("Annonymously connected to: " + ftpAddr)
+        print (prompt)
+        for character in prompt:
+            print ("=", end ="")
 
+        prompt = """
 1.  Login
 Q.  Disconnect
 
@@ -164,7 +166,7 @@ Enter your choice:
         opt = takeinput.takeInput(prompt)
         print()
 
-        # 1.  Login to server
+        # Attempt to login to server
         if opt[1] == "1":
             # Gather username somehow (through entry or saved connection, etc)
             usr = 'testacct@ftptest.portlandredbird.com'
@@ -174,17 +176,19 @@ Enter your choice:
             # If login was successful, proceed to logged in commands
             if serverResponse[0] == True:
                 postLoginMenu(ftp, serverResponse[1])
+            # If login was unsuccessful, display error message
             else:
-                print(serverResponse[0]) 
+                print("Error! Failed to log into server")
+                print("Response: " + str(serverResponse[1])) 
+                print()
         elif (opt[1].lower() == "q"):
-            print("Going back...")
+            print("Disconnecting...")
             print()
         else:
             invalidMenuInput(opt)
 
 
-
-
+# Main
 if __name__ == "__main__":
     # Sets up logging. 
     # Uses filemode 'a' so it appends to the existing log instead of overwriting
@@ -197,8 +201,8 @@ if __name__ == "__main__":
     while (opt[1].lower() != "q"):
         # display menu
         prompt = """
-FTP Client TUI
-==============
+FTP Client (not connected)
+==========================
 
 1.  Connect to server
 Q.  Quit

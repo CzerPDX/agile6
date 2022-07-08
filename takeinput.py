@@ -12,12 +12,13 @@ import logging
 # Does not check for anything besides empty input (No other validity tests)
 def takeInput(prompt):
     userInput = input(prompt)
+    print()
     logging.info(userInput)
 
     ret = (True, userInput)
 
     if userInput == "":
         ret = (False, "Error! Entry cannot be blank")
-        logging.error(ret)
+        logging.error(ret[1])
 
     return ret

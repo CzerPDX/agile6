@@ -18,5 +18,7 @@ def loginSecure(ftp, usr):
     except Exception as err:
         resp = (False, err)
         logging.error(err)
+        
+    print()
 
     return resp
