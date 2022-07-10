@@ -30,4 +30,3 @@ def test_connectftp_bad_server():
     # Should contain (bool=False, str)
     assert (connectionResponse[0] == False), "Expected response[0] == False. got: {}".format(connectionResponse[0])
     assert isinstance(connectionResponse[1], str), "Expected type(response[1]) == str. got: {}".format(connectionResponse[1])
-
