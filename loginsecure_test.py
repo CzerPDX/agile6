@@ -1,9 +1,9 @@
-import connectftp   # Use to create a valid connection
-import loginsecure  # Module for testing
+import connectftp       # Use to create a valid connection
+import loginsecure      # Module for testing
 
-import pytest
-import os
-from ftplib import FTP
+import pytest           # Python testing
+import os               # Access environment variables
+from ftplib import FTP  # Create ftp object
 
 # References
 # https://discuss.dizzycoding.com/how-to-test-a-function-with-input-call/
@@ -15,7 +15,8 @@ from ftplib import FTP
 def test_loginSecure_valid_credentials(monkeypatch):
     # Establish FTP connection
     ftpAddr = os.environ['FTPADDR']
-    ftp = FTP(ftpAddr)
+    connectionObj = connectftp.connectFTP(ftpAddr)
+    ftp = connectionObj[1]
 
     # Get valid credentials
     usr = os.environ['FTPUSR']
@@ -33,7 +34,8 @@ def test_loginSecure_valid_credentials(monkeypatch):
 def test_loginSecure_bad_password(monkeypatch):
     # Establish FTP connection
     ftpAddr = os.environ['FTPADDR']
-    ftp = FTP(ftpAddr)
+    connectionObj = connectftp.connectFTP(ftpAddr)
+    ftp = connectionObj[1]
     
     # Get valid username
     usr = os.environ['FTPUSR']
@@ -50,7 +52,8 @@ def test_loginSecure_bad_password(monkeypatch):
 def test_loginSecure_bad_username(monkeypatch):
     # Establish FTP connection
     ftpAddr = os.environ['FTPADDR']
-    ftp = FTP(ftpAddr)
+    connectionObj = connectftp.connectFTP(ftpAddr)
+    ftp = connectionObj[1]
 
     # Set up bad username
     usr = "bad_username"

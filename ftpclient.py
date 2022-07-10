@@ -1,5 +1,6 @@
 import logging
 import sys
+import os
 from ftplib import FTP
 
 ########################################
@@ -225,7 +226,7 @@ Enter your choice:
         # Proccess user input
         # 1.  Connect to FTP server
         if opt[1] == "1":
-            ftpAddr = 'ftptest.portlandredbird.com'
+            ftpAddr = os.environ['FTPADDR']
             badAddr = 'afdsfsfafsa'
             
             # Attempt to connect to the server
