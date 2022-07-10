@@ -13,10 +13,13 @@ import loginsecure              # Log into remote server
 # Logging documentation: https://docs.python.org/3/library/logging.html
 #                        https://docs.python.org/3/howto/logging.html
 # how to make strings span multiple lines: https://www.tutorialspoint.com/triple-quotes-in-python
+# checking types within a tuples
 
 # Handle print messages for invalid input
 def invalidMenuInput(opt):
+
     # opt[0] will be false if user entry was blank
+    # opt[1] will contain an error message about blank entry in this case
     if opt[0] == False:
         # Print error message
         print(opt[1])
