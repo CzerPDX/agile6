@@ -30,7 +30,7 @@ def test_loginSecure_valid_credentials(monkeypatch):
     ftp.quit()
 
 # Test with bad password
-def test_loginSecure_valid_credentials(monkeypatch):
+def test_loginSecure_bad_password(monkeypatch):
     # Establish FTP connection
     ftpAddr = os.environ['FTPADDR']
     ftp = FTP(ftpAddr)
@@ -47,7 +47,7 @@ def test_loginSecure_valid_credentials(monkeypatch):
     ftp.quit()
 
 # Test with bad username
-def test_loginSecure_valid_credentials(monkeypatch):
+def test_loginSecure_bad_username(monkeypatch):
     # Establish FTP connection
     ftpAddr = os.environ['FTPADDR']
     ftp = FTP(ftpAddr)
