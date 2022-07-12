@@ -56,12 +56,6 @@ merge your branch with staging and delete it
 <hr>
 
 ## To compile project:
-<<<<<<< HEAD
-
-$ python3 ftp-client.py
-
-
-=======
 $ python3 ftp-client.py
 <br><br>
 
@@ -79,4 +73,3 @@ $ python3 ftp-client.py
         - For getting environment variables
 - **To run pytest**
     - $ pytest
->>>>>>> 02159a20c558de64237846cd7ace9a93d9ca16db
