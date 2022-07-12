@@ -12,8 +12,6 @@ def test_listRemote_valid_input(monkeypatch):
     connectionObj = connectftp.connectFTP(ftpAddr)
     ftp = connectionObj[1]
 
-
-
     # Get valid credentials
     usr = os.environ['FTPUSR']
     password = os.environ['FTPPASS']
