@@ -1,3 +1,4 @@
+import logging
 import os
  
 def listLocal():
@@ -5,7 +6,6 @@ def listLocal():
     path = os.getcwd()
     dir_list = os.listdir(path)
     
+    logging.info("Local files listed")
     print("Files and directories in '", path, "' :")
-    
-    # prints all files
     print(dir_list)

@@ -56,7 +56,27 @@ merge your branch with staging and delete it
 <hr>
 
 ## To compile project:
+<<<<<<< HEAD
 
 $ python3 ftp-client.py
 
 
+=======
+$ python3 ftp-client.py
+<br><br>
+
+<hr>
+
+## Testing with pytest
+- Create a matching test file for each .py file you add to the project
+    - **Test File Names**: "[original file name]_test.py"
+- Create a test function for every test case
+    - **Test Function Names**: "test_[original function name]_test_description"
+- **File includes**
+    - include pytest
+        - test library
+    - include os
+        - For getting environment variables
+- **To run pytest**
+    - $ pytest
+>>>>>>> 02159a20c558de64237846cd7ace9a93d9ca16db
