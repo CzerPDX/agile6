@@ -3,13 +3,25 @@ import sys
 import os
 from ftplib import FTP
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> a8740c9eb6818614cd24b01cc47f9436bb7afb78
 ########################################
 # Add includes here for your files
 import takeinput                # Take input from user (log and check for blank input)
 import connectftp               # Connect to remote server
 import loginsecure              # Log into remote server
+<<<<<<< HEAD
 import listlocaldir
 import listremotedir 
+=======
+<<<<<<< HEAD
+import listlocaldir
+import listremotedir 
+=======
+>>>>>>> a8740c9eb6818614cd24b01cc47f9436bb7afb78
+>>>>>>> 1e2347d9c921b7be8627d5afeffa2d429d16f3ea
 
 # References:
 # FTPlib documentation: https://docs.python.org/3/library/ftplib.html
@@ -86,9 +98,16 @@ Enter your choice:
         # 1.  List directories & files on remote server
         if opt[1] == "1":
             print("You chose " + opt[1])
+<<<<<<< HEAD
             list = listremotedir.listRemote(ftp)
             print(list[0])
             print(list[1])
+=======
+<<<<<<< HEAD
+            listremotedir.listRemote(ftp)
+=======
+>>>>>>> a8740c9eb6818614cd24b01cc47f9436bb7afb78
+>>>>>>> 1e2347d9c921b7be8627d5afeffa2d429d16f3ea
         # 2.  Get file from remote server
         elif opt[1] == "2":
             print("You chose " + opt[1])
@@ -101,7 +120,14 @@ Enter your choice:
         # 5.  List directories & files on  local machine
         elif opt[1] == "5":
             print("You chose " + opt[1])
+<<<<<<< HEAD
             listlocaldir.listLocal()
+=======
+<<<<<<< HEAD
+            listlocaldir.listLocal()
+=======
+>>>>>>> a8740c9eb6818614cd24b01cc47f9436bb7afb78
+>>>>>>> 1e2347d9c921b7be8627d5afeffa2d429d16f3ea
         # 6.  Put file onto remote server
         elif opt[1] == "6":
             print("You chose " + opt[1])
