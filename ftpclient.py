@@ -84,6 +84,10 @@ Enter your choice:
         # 1.  List directories & files on remote server
         if opt[1] == "1":
             print("You chose " + opt[1])
+            list = listremotedir.listRemote(ftp)
+            print(list[0])
+            print(list[1])
+            listremotedir.listRemote(ftp)
         # 2.  Get file from remote server
         elif opt[1] == "2":
             print("You chose " + opt[1])
@@ -96,6 +100,7 @@ Enter your choice:
         # 5.  List directories & files on  local machine
         elif opt[1] == "5":
             print("You chose " + opt[1])
+            listlocaldir.listLocal()
         # 6.  Put file onto remote server
         elif opt[1] == "6":
             print("You chose " + opt[1])
