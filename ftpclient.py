@@ -13,8 +13,6 @@ import listremotedir
 
 import saveconnection           # Save a new connection information
 
-import saveconnection           # Save a new connection information
-
 # References:
 # FTPlib documentation: https://docs.python.org/3/library/ftplib.html
 # Logging documentation: https://docs.python.org/3/library/logging.html
