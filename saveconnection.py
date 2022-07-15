@@ -28,23 +28,27 @@ def saveConnection(label, ftpAddr, username):
     except Exception as err:
         # pass error back out to the UI
         ret = (False, err)
+        logging.error(err)
 
     if (ret[0] == True):
         try:
-            f.write(label + "," + ftpAddr + "," + username)
+            writeToFile = label + "," + ftpAddr + "," + username + '\n'
+            f.write(writeToFile)
+            successMsg = "Successfully added new connection information: " + writeToFile.rstrip('\n')
+            logging.info(successMsg)
         except Exception as err:
             # pass error back out to the UI
             ret = (False, err)
+            logging.error(err)
 
     if (ret[0] == True):
         try: 
             f.close()
-            successMsg = "Successfully added new connection information"
-            logging.info(successMsg)
             ret = (True, successMsg)
         except Exception as err:
             # pass error back out to the UI
             ret = (False, err)
+            logging.error(err)
 
     
     # Postconditions

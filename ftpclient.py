@@ -180,6 +180,7 @@ Enter your choice:
             try:
                 resp = saveconnection.saveConnection(label, ftpAddr, username)
                 logging.info(resp[1])
+                print(resp[1])
             except Exception as err:
                 print(err)
                 logging.error(err)
