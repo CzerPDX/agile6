@@ -18,7 +18,6 @@ def takeInput(prompt):
     assert len(prompt) > 0, "expected non-empty prompt. got: {}".format(prompt)
 
     userInput = input(prompt)
-    print()
     logging.info(userInput)
 
     ret = (True, userInput)

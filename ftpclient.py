@@ -9,6 +9,8 @@ import takeinput                # Take input from user (log and check for blank 
 import connectftp               # Connect to remote server
 import loginsecure              # Log into remote server
 
+import saveconnection           # Save a new connection information
+
 # References:
 # FTPlib documentation: https://docs.python.org/3/library/ftplib.html
 # Logging documentation: https://docs.python.org/3/library/logging.html
@@ -38,8 +40,10 @@ def postLoginMenu(ftp, welcomeMessage):
     logout = False          # 
     opt = (True, "")        # User input tuple
 
-    # Create a menu prompt string
-    prompt = welcomeMessage + """
+    # Repeat menu options until logout = True
+    while (logout != True):
+        # Create a menu prompt string
+        prompt = welcomeMessage + """
 
 1.  List directories & files on remote server
 2.  Get file from remote server
@@ -63,12 +67,11 @@ Q.  Log off
 
 Enter your choice: 
     """
-    # Some menu formatting (removes newline from the end, then adds a space)
-    prompt = prompt.rstrip()
-    prompt += " "
 
-    # Repeat menu options until logout = True
-    while (logout != True):
+        # Some menu formatting (removes newline from the end, then adds a space)
+        prompt = prompt.rstrip()
+        prompt += " "
+
         # Note:
         # takeInput will automatically log input
         # takeInput will automatically log blank user input errors
@@ -124,7 +127,59 @@ Enter your choice:
             print("You chose " + opt[1])
         # 13. Save connection information
         elif opt[1] == "13":
-            print("You chose " + opt[1])
+            # Input is being taken in the UI because the function itself
+            # will take the connection information as arguments.
+            prompt = "Saving new FTP connection"
+            logging.info(prompt)
+
+            # Display UI
+            print(prompt)
+            print("=======================")
+            print()
+            inputBuf = (False, "")
+            label = ""
+            ftpAddr = ""
+            username = ""
+
+            # Get label for ftp
+            prompt = "Enter a label or name for your FTP connection: ".rstrip('\n')
+            while (inputBuf[0] == False):
+                inputBuf = takeinput.takeInput(prompt)
+                if (inputBuf[0] == False):
+                    print(inputBuf[1])
+                else:
+                    label = inputBuf[1]
+            # Reset user input
+            inputBuf = (False, "")
+
+            # Get ftp address
+            prompt = "Enter a ftp server address: ".rstrip('\n')
+            while (inputBuf[0] == False):
+                inputBuf = takeinput.takeInput(prompt)
+                if (inputBuf[0] == False):
+                    print(inputBuf[1])
+                else:
+                    ftpAddr = inputBuf[1]
+            # Reset user input
+            inputBuf = (False, "")
+
+            # Get username
+            prompt = "Enter your username: ".rstrip('\n')
+            while (inputBuf[0] == False):
+                inputBuf = takeinput.takeInput(prompt)
+                if (inputBuf[0] == False):
+                    print(inputBuf[1])
+                else:
+                    username = inputBuf[1]
+
+            # Now call the function to add the new connection info to the list
+            try:
+                resp = saveconnection.saveConnection(label, ftpAddr, username)
+                logging.info(resp[1])
+            except Exception as err:
+                print(err)
+                logging.error(err)
+
         # 14. Use saved connection information to connect
         elif opt[1] == "14":
             print("You chose " + opt[1])
@@ -178,13 +233,19 @@ Enter your choice:
         # Attempt to login to server
         if opt[1] == "1":
             # Gather username somehow (through entry or saved connection, etc)
-            usr = 'testacct@ftptest.portlandredbird.com'
+            usr = os.environ['FTPUSR']
 
             # Login to FTP server you are connected to
             serverResponse = loginsecure.loginSecure(ftp, usr)
             # If login was successful, proceed to logged in commands
             if serverResponse[0] == True:
                 postLoginMenu(ftp, serverResponse[1])
+                # quit after successful login menu return. There doesn't seem
+                # to be a different function call for "logout" vs "disconnect", so
+                # once they log in successfully they must then fully disconnect from
+                # the server with a ftp.quit()
+                ftp.quit()
+                break
             # If login was unsuccessful, display error message
             else:
                 print("Error! Failed to log into server")
@@ -232,7 +293,6 @@ Enter your choice:
         # 1.  Connect to FTP server
         if opt[1] == "1":
             ftpAddr = os.environ['FTPADDR']
-            badAddr = 'afdsfsfafsa'
             
             # Attempt to connect to the server
             serverResponse = connectftp.connectFTP(ftpAddr)
