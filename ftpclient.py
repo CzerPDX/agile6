@@ -8,6 +8,8 @@ from ftplib import FTP
 import takeinput                # Take input from user (log and check for blank input)
 import connectftp               # Connect to remote server
 import loginsecure              # Log into remote server
+import listlocaldir
+import listremotedir 
 
 # References:
 # FTPlib documentation: https://docs.python.org/3/library/ftplib.html
