@@ -13,6 +13,8 @@ import listremotedir
 
 import saveconnection           # Save a new connection information
 
+import saveconnection           # Save a new connection information
+
 # References:
 # FTPlib documentation: https://docs.python.org/3/library/ftplib.html
 # Logging documentation: https://docs.python.org/3/library/logging.html
@@ -178,6 +180,7 @@ Enter your choice:
             try:
                 resp = saveconnection.saveConnection(label, ftpAddr, username)
                 logging.info(resp[1])
+                print(resp[1])
             except Exception as err:
                 print(err)
                 logging.error(err)
