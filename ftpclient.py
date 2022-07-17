@@ -8,6 +8,9 @@ from ftplib import FTP
 import takeinput                # Take input from user (log and check for blank input)
 import connectftp               # Connect to remote server
 import loginsecure              # Log into remote server
+import listremotedir            # 
+import listlocaldir             #
+import getfiles                 # Module for downloading a single and multiple files
 
 # References:
 # FTPlib documentation: https://docs.python.org/3/library/ftplib.html
@@ -66,6 +69,7 @@ Enter your choice:
     # Some menu formatting (removes newline from the end, then adds a space)
     prompt = prompt.rstrip()
     prompt += " "
+    files_to_get = []
 
     # Repeat menu options until logout = True
     while (logout != True):
@@ -91,6 +95,11 @@ Enter your choice:
         # 2.  Get file from remote server
         elif opt[1] == "2":
             print("You chose " + opt[1])
+            try:
+                getfiles.get_single(ftp, files_to_get)
+            except:
+                pass
+            files_to_get = []
         # 3.  Log off from remote server
         elif opt[1] == "3":
             print("You chose " + opt[1])
