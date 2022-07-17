@@ -10,7 +10,7 @@ import connectftp               # Connect to remote server
 import loginsecure              # Log into remote server
 import listlocaldir
 import listremotedir 
-
+import getfiles                 #
 import saveconnection           # Save a new connection information
 
 # References:
@@ -96,6 +96,11 @@ Enter your choice:
         # 2.  Get file from remote server
         elif opt[1] == "2":
             print("You chose " + opt[1])
+            files_to_get = []
+            try:
+                getfiles.get_single(ftp, files_to_get)
+            except:
+                pass
         # 3.  Log off from remote server
         elif opt[1] == "3":
             print("You chose " + opt[1])
