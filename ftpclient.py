@@ -73,7 +73,6 @@ Enter your choice:
         # Some menu formatting (removes newline from the end, then adds a space)
         prompt = prompt.rstrip()
         prompt += " "
-        files_to_get = []
 
         # Note:
         # takeInput will automatically log input
@@ -97,11 +96,11 @@ Enter your choice:
         # 2.  Get file from remote server
         elif opt[1] == "2":
             print("You chose " + opt[1])
+            files_to_get = []
             try:
                 getfiles.get_single(ftp, files_to_get)
             except:
                 pass
-            files_to_get = []
         # 3.  Log off from remote server
         elif opt[1] == "3":
             print("You chose " + opt[1])
