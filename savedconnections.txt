@@ -1,3 +1,2 @@
-fdsfsd,ffff,fdsname name 1
-ffff,ffffffffffffffff,sssssssss
-test label,test.ftp.address,testusername@test.ftp.address
+real login,ftptest.portlandredbird.com,testacct@ftptest.portlandredbird.com
+new test,added.com.ftp.bah,myusernmaeeeeee
