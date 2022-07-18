@@ -73,4 +73,8 @@ $ python3 ftp-client.py
     - include os
         - For getting environment variables
 - **To run pytest**
+<<<<<<< HEAD
     - $ pytest
+=======
+    - $ pytest
+>>>>>>> main

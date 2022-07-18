@@ -12,4 +12,12 @@ def listRemote(ftp):
         ret = (False, err)
         logging.error(err)
 
+<<<<<<< HEAD
     return ret
+=======
+<<<<<<< HEAD
+    return ret
+=======
+    return ret
+>>>>>>> c562f4c96af11a116b77883541c7c87456fa4998
+>>>>>>> main

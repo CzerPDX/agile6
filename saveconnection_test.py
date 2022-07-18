@@ -6,7 +6,6 @@ import loginsecure
 import saveconnection
 
 
-
 # Able to save and append to file without issue
 def test_saveConnection_valid(monkeypatch):
     # Establish FTP connection
@@ -28,6 +27,7 @@ def test_saveConnection_valid(monkeypatch):
     username = "testusername@test.ftp.address"
 
     # Test function
+<<<<<<< HEAD
     result = saveconnection.saveConnection(label, ftpAddr, username, "testsavedconnections.txt")
     assert result[0] == True
 
@@ -79,3 +79,10 @@ def test_saveConnection_not_valid(monkeypatch):
     # Test function
     result = saveconnection.saveConnection(label, ftpAddr, username, "testsavedconnections.txt")
     assert result[0] == False
+=======
+    result = saveconnection.saveConnection(label, ftpAddr, username)
+    assert result[0] == True
+
+
+# NOTE: Not totally sure how to test not being allowed to write yet
+>>>>>>> main
