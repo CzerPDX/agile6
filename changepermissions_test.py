@@ -1,12 +1,13 @@
+from operator import contains
 import pytest
 import os
-import listremotedir
+import changepermissions
 import connectftp
 import loginsecure
 
 
 ## connected and in a valid directory ## 
-def test_listRemote_valid_input(monkeypatch):
+def test_change_permissions(monkeypatch):
     # Establish FTP connection
     ftpAddr = os.environ['FTPADDR']
     connectionObj = connectftp.connectFTP(ftpAddr)
@@ -20,10 +21,11 @@ def test_listRemote_valid_input(monkeypatch):
     monkeypatch.setattr('builtins.input', lambda _: password)
     loginsecure.loginSecure(ftp, usr)
 
-    #call list remote
-    server_response = listremotedir.listRemote(ftp)
-    assert server_response[0] == True
+# Passes password into loginSecure via input
+    server_response = changepermissions.changePermissions(ftp, "777", "noread")
+    assert server_response, server_response.find("200 Permissions changed on noread")
 
 # Close FTP connection
     ftp.quit()
 
+## connected to server that requires authentication but not logged in ##
