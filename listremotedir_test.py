@@ -20,11 +20,10 @@ def test_listRemote_valid_input(monkeypatch):
     monkeypatch.setattr('builtins.input', lambda _: password)
     loginsecure.loginSecure(ftp, usr)
 
-# Passes password into loginSecure via input
+    #call list remote
     server_response = listremotedir.listRemote(ftp)
     assert server_response[0] == True
 
 # Close FTP connection
     ftp.quit()
 
-## connected to server that requires authentication but not logged in ##

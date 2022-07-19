@@ -5,8 +5,14 @@
 # import loginsecure
 
 
+
+### Just waiting to get add new file implemented so I can add and delete a file for this test
+                        ### -Nick
+
+
+
 # ## connected and in a valid directory ## 
-# def test_listRemote_valid_input(monkeypatch):
+# def test_delete_file(monkeypatch):
 #     # Establish FTP connection
 #     ftpAddr = os.environ['FTPADDR']
 #     connectionObj = connectftp.connectFTP(ftpAddr)
@@ -20,11 +26,9 @@
 #     monkeypatch.setattr('builtins.input', lambda _: password)
 #     loginsecure.loginSecure(ftp, usr)
 
-# # Passes password into loginSecure via input
+        #delete file call
 #     server_response = deletefile.deleteFile(ftp,"default.txt")
 #     assert server_response == True
 
 # # Close FTP connection
 #     ftp.quit()
-
-## connected to server that requires authentication but not logged in ##

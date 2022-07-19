@@ -1,3 +1,4 @@
+from operator import contains
 import pytest
 import os
 import changepermissions
@@ -6,7 +7,7 @@ import loginsecure
 
 
 ## connected and in a valid directory ## 
-def test_listRemote_valid_input(monkeypatch):
+def test_change_permissions(monkeypatch):
     # Establish FTP connection
     ftpAddr = os.environ['FTPADDR']
     connectionObj = connectftp.connectFTP(ftpAddr)
@@ -22,7 +23,7 @@ def test_listRemote_valid_input(monkeypatch):
 
 # Passes password into loginSecure via input
     server_response = changepermissions.changePermissions(ftp, "777", "noread")
-    assert server_response == True
+    assert server_response, server_response.find("200 Permissions changed on noread")
 
 # Close FTP connection
     ftp.quit()
