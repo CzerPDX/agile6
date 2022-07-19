@@ -78,7 +78,11 @@ $ python3 ftp-client.py
 =======
     - $ pytest
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> a8740c9eb6818614cd24b01cc47f9436bb7afb78
 =======
 >>>>>>> main
 >>>>>>> 614a2a9a6ce319f86388f65c84a06ca0fd7a4602
+=======
+>>>>>>> main
+>>>>>>> 41e308fa6fd0b7161ef790cab197d28ea8089313

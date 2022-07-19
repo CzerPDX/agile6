@@ -12,5 +12,5 @@ def listRemote(ftp):
     except Exception as err:
         ret = (False, err)
         logging.error(err)
-        
+
     return ret

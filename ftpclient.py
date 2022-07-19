@@ -1,3 +1,4 @@
+from fileinput import filename
 import logging
 import sys
 import os
@@ -8,6 +9,10 @@ from ftplib import FTP
 import takeinput                # Take input from user (log and check for blank input)
 import connectftp               # Connect to remote server
 import loginsecure              # Log into remote server
+import listremotedir
+import listlocaldir
+import changepermissions
+import deletefile
 import listlocaldir
 import listremotedir 
 import getfiles                 #
@@ -92,7 +97,8 @@ Enter your choice:
         # 1.  List directories & files on remote server
         if opt[1] == "1":
             print("You chose " + opt[1])
-            listremotedir.listRemote(ftp)
+            list = listremotedir.listRemote(ftp)
+            print(list[1])
         # 2.  Get file from remote server
         elif opt[1] == "2":
             print("You chose " + opt[1])
@@ -123,9 +129,16 @@ Enter your choice:
         # 9. Delete file from remote server
         elif opt[1] == "9":
             print("You chose " + opt[1])
+            fileName = input("Please enter file or directory to delete: ")
+            ftpResponse = deletefile.deleteFile(ftp, fileName)
+            print(ftpResponse)
         # 10. Change permissions on remote server
         elif opt[1] == "10":
             print("You chose " + opt[1])
+            chmodKey = input("Please enter 3 digit chmod key: ")
+            fileName = input("Please enter file or directory name to change permissions: ")
+            ftpResponse = changepermissions.changePermissions(ftp, chmodKey, fileName)
+            print(ftpResponse)
         # 11. Copy directories on remote server
         elif opt[1] == "11":
             print("You chose " + opt[1])
