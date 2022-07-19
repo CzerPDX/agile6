@@ -21,7 +21,7 @@ def test_listRemote_valid_input(monkeypatch):
     loginsecure.loginSecure(ftp, usr)
 
 # Passes password into loginSecure via input
-    server_response = changepermissions.changePermissions(ftp, "777", "default.txt")
+    server_response = changepermissions.changePermissions(ftp, "777", "noread")
     assert server_response == True
 
 # Close FTP connection

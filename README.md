@@ -12,6 +12,7 @@ Note from Brooke: I'm no expert in git, so if there are improvements to this met
 # For every user story card:
 
 1. **Go to the main repo and create a new branch**<br>
+    - Select staging as the source
     - https://github.com/CzerPDX/agile6/branches
 
 2. **Switch to your branch on the Linux server**
@@ -75,9 +76,5 @@ $ python3 ftp-client.py
 <<<<<<< HEAD
     - $ pytest
 =======
-<<<<<<< HEAD
     - $ pytest
-=======
-    - $ pytest
->>>>>>> a8740c9eb6818614cd24b01cc47f9436bb7afb78
->>>>>>> 1e2347d9c921b7be8627d5afeffa2d429d16f3ea
+>>>>>>> main

@@ -1,0 +1,2 @@
+real login,ftptest.portlandredbird.com,testacct@ftptest.portlandredbird.com
+new test,added.com.ftp.bah,myusernmaeeeeee
