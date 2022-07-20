@@ -11,7 +11,7 @@ def renameFile(ftp):
 	# Check if the name is duplicate
 	isDuplicate = findName(toName)
 
-	if(fileExist && !isDuplicate):
+	if(fileExist and not isDuplicate):
 		ftp.rename(fromName, toName)
 
 	return
