@@ -17,7 +17,8 @@ import listlocaldir
 import listremotedir 
 import getfiles                 #
 import saveconnection           # Save a new connection information
-
+import renamefile
+import createremotedir
 
 import saveconnection           # Save a new connection information
 
@@ -154,6 +155,7 @@ Enter your choice:
         # 15. Rename file on remote server
         elif opt[1] == "15":
             print("You chose " + opt[1])
+            renamefile.renameFile(ftp)
         # 16. Timeout after idle time
         elif opt[1] == "16":
             print("You chose " + opt[1])
