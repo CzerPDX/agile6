@@ -17,7 +17,8 @@ import listlocaldir
 import listremotedir 
 import getfiles                 #
 import saveconnection           # Save a new connection information
-
+import renamefile
+import createremotedir
 
 import saveconnection           # Save a new connection information
 
@@ -154,6 +155,7 @@ Enter your choice:
         # 15. Rename file on remote server
         elif opt[1] == "15":
             print("You chose " + opt[1])
+            renamefile.renameFile(ftp)
         # 16. Timeout after idle time
         elif opt[1] == "16":
             print("You chose " + opt[1])
@@ -201,7 +203,16 @@ Enter your choice:
         # Attempt to login to server
         if opt[1] == "1":
             # Gather username somehow (through entry or saved connection, etc)
-            usr = os.environ['FTPUSR']
+            # usr = os.environ['FTPUSR']
+            # Get username
+            prompt = "Enter your username: ".rstrip('\n')
+            inputBuf = (False, "")
+            while (inputBuf[0] == False):
+                inputBuf = takeinput.takeInput(prompt)
+                if (inputBuf[0] == False):
+                    print(inputBuf[1])
+                else:
+                    usr = inputBuf[1]
 
             # Login to FTP server you are connected to
             serverResponse = loginsecure.loginSecure(ftp, usr)
@@ -262,7 +273,16 @@ Enter your choice:
         # Proccess user input
         # 1.  Connect to FTP server
         if opt[1] == "1":
-            ftpAddr = os.environ['FTPADDR']
+            # ftpAddr = os.environ['FTPADDR']
+            # Get ftp address
+            inputBuf = (False, "")
+            prompt = "Enter the FTP address: ".rstrip('\n')
+            while (inputBuf[0] == False):
+                inputBuf = takeinput.takeInput(prompt)
+                if (inputBuf[0] == False):
+                    print(inputBuf[1])
+                else:
+                    ftpAddr = inputBuf[1]
             
             # Attempt to connect to the server
             serverResponse = connectftp.connectFTP(ftpAddr)
@@ -376,7 +396,6 @@ Enter your choice:
                         # once they log in successfully they must then fully disconnect from
                         # the server with a ftp.quit()
                         ftp.quit()
-                        break
                     # If login was unsuccessful, display error message
                     else:
                         print("Error! Failed to log into server")

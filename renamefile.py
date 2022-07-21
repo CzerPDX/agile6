@@ -6,17 +6,16 @@ def renameFile(ftp):
 	
 	fromName = input('Which file do you want to rename?\n')
 	# Check if the file exists on the remote server.
-	fileExist = findName(fromName)
+	fileExist = findName(fromName, ftp)
 	toName = input('What would you like to rename it to?\n')
 	# Check if the name is duplicate
-	isDuplicate = findName(toName)
+	isDuplicate = findName(toName, ftp)
 
-	if(fileExist && !isDuplicate):
-		ftp.rename(fromName, toName)
+	
+	ftp.rename(fromName, toName)
 
-	return
 
-def findName(toFind):
+def findName(toFind, ftp):
 	
 	fileNames = ftp.nlst(ftp.pwd())
 	i = 0
