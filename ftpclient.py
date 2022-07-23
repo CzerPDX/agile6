@@ -103,11 +103,26 @@ Enter your choice:
         # 2.  Get file from remote server
         elif opt[1] == "2":
             print("You chose " + opt[1])
-            files_to_get = []
-            try:
-                getfiles.get_single(ftp, files_to_get)
-            except:
-                pass
+            print("Files available to download:\n")
+            list = getfiles.list_files(ftp, False)
+            for l in list:
+                print(str(list.index((l[0], l[1])) + 1) + " " + l[0])
+            user_input = ""
+            while user_input != "/":
+                print("Please enter the number of the file to download or the slash character / to abort:")
+                user_input = input()
+                if user_input == "/":
+                    break
+                try:
+                    val = int(user_input)
+                    if val < 1 or len(list) < val:
+                        print("Number given is out of range.")
+                        continue
+                    print(list[val - 1][0])
+                    getfiles.get_single(ftp, list[val - 1][0] , list[val - 1][1])
+                    break
+                except ValueError:
+                    print("Input was not a valid number.")
         # 3.  Log off from remote server
         elif opt[1] == "3":
             print("You chose " + opt[1])
