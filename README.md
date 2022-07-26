@@ -1,11 +1,12 @@
 # agile6
 Agile class group 6 repo
 
-Group 6 members (add your name when you have access):
-Brooke Czerwinski
-Nicholas Muller
-Jake Strong
-John Pham
+Members:
+Brooke Czerwinski,
+Nicholas Muller,
+Jake Strong,
+Jonas Persson, and
+John Pham.
 
 Note from Brooke: I'm no expert in git, so if there are improvements to this method we can implement, let's fix it up!
 
@@ -73,8 +74,4 @@ $ python3 ftp-client.py
     - include os
         - For getting environment variables
 - **To run pytest**
-<<<<<<< HEAD
     - $ pytest
-=======
-    - $ pytest
->>>>>>> main
