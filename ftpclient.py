@@ -17,6 +17,7 @@ import listlocaldir
 import listremotedir 
 import getfiles                 #
 import saveconnection           # Save a new connection information
+import rename_local
 
 
 import saveconnection           # Save a new connection information
@@ -157,6 +158,12 @@ Enter your choice:
         # 16. Timeout after idle time
         elif opt[1] == "16":
             print("You chose " + opt[1])
+            old = input("Please enter relative path to local file you want to rename")
+            new = input("Please enter the relative path of the new name of the file")
+            if(rename_local.renameLocal(old, new)):
+                print("Local file successfully renamed")
+            else:
+                print("Error renaming file")
         # 17. Log history
         elif opt[1] == "17":
             print("You chose " + opt[1])
