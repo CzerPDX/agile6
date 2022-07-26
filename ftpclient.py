@@ -75,6 +75,7 @@ def postLoginMenu(ftp, welcomeMessage):
 15. Rename file on remote server
 16. Timeout after idle time
 17. Log history
+18. Rename local file
 
 Q.  Log off
 
@@ -176,15 +177,22 @@ Enter your choice:
         # 16. Timeout after idle time
         elif opt[1] == "16":
             print("You chose " + opt[1])
-            old = input("Please enter relative path to local file you want to rename")
-            new = input("Please enter the relative path of the new name of the file")
-            if(rename_local.renameLocal(old, new)):
-                print("Local file successfully renamed")
-            else:
-                print("Error renaming file")
+
         # 17. Log history
         elif opt[1] == "17":
             print("You chose " + opt[1])
+
+        # 18. Rename local file
+        elif opt[1] == "18":
+            print("You chose " + opt[1])
+            old = input("Please enter relative path to local file you want to rename: ")
+            new = input("Please enter the relative path of the new name of the file: ")
+            ftpResponse = rename_local.renameLocal(old, new)
+            if(ftpResponse == True):
+                print("\nLocal file successfully renamed")
+            else:
+                print("\nError renaming file")
+
         #Q.  Log off
         elif opt[1].lower() == "q":
             print("Logging out...")
