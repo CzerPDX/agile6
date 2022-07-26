@@ -11,6 +11,8 @@ import connectftp               # Connect to remote server
 import loginsecure              # Log into remote server
 import listremotedir
 import listlocaldir
+import putfile
+import put_multi
 import changepermissions
 import deletefile
 import listlocaldir
@@ -19,7 +21,7 @@ import getfiles                 #
 import saveconnection           # Save a new connection information
 import renamefile
 import createremotedir
-
+import logoff
 import saveconnection           # Save a new connection information
 
 # References:
@@ -126,6 +128,12 @@ Enter your choice:
         # 3.  Log off from remote server
         elif opt[1] == "3":
             print("You chose " + opt[1])
+            logout_resp = logoff.logoff(ftp)
+            if(logout_resp[0] == True):
+                print("\n" + logout_resp[1])
+            else:
+                print("Logout Failed")
+
         # 4.  Get multiple
         elif opt[1] == "4":
             print("You chose " + opt[1])
@@ -136,9 +144,24 @@ Enter your choice:
         # 6.  Put file onto remote server
         elif opt[1] == "6":
             print("You chose " + opt[1])
+            path = input(r"Please enter the path of the file you wish to upload(eg:C:\Users\jake\Desktop\uploads ): ")
+            filename = input("please type in file name you wish to upload with extention: ");
+            upload_path = input("Please enter the diretory path you want to upload the file to eg: /uploads : ")
+            putfile.put_file(ftp, path, filename, upload_path)
         # 7.  Put multiple
         elif opt[1] == "7":
             print("You chose " + opt[1])
+            add_more = True
+            while add_more == True:
+                path = input(r"Please enter the path of the file you wish to upload(eg:C:\Users\jake\Desktop\uploads ): ")
+                filename = input("please type in file name you wish to upload with extention: ");
+                upload_path = input("Please enter the diretory path you want to upload the file to eg: /uploads : ")
+                put_multi.put_multi_file(ftp, path, filename, upload_path)
+                ans = input("Do you wish to upload another file? yes/no : ")
+
+                if(ans == 'no'):
+                    add_more = False;
+
         # 8.  Create directory on remote server
         elif opt[1] == "8":
             print("You chose " + opt[1])
