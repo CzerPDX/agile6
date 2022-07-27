@@ -11,6 +11,8 @@ import connectftp               # Connect to remote server
 import loginsecure              # Log into remote server
 import listremotedir
 import listlocaldir
+import putfile
+import put_multi
 import changepermissions
 import deletefile
 import listlocaldir
@@ -19,8 +21,10 @@ import getfiles                 #
 import saveconnection           # Save a new connection information
 import renamefile
 import createremotedir
+
 import removeremotedir
 
+import logoff
 import saveconnection           # Save a new connection information
 
 # References:
@@ -104,14 +108,35 @@ Enter your choice:
         # 2.  Get file from remote server
         elif opt[1] == "2":
             print("You chose " + opt[1])
-            files_to_get = []
-            try:
-                getfiles.get_single(ftp, files_to_get)
-            except:
-                pass
+            print("Files available to download:\n")
+            list = getfiles.list_files(ftp, False)
+            for l in list:
+                print(str(list.index((l[0], l[1])) + 1) + " " + l[0])
+            user_input = ""
+            while user_input != "/":
+                print("Please enter the number of the file to download or the slash character / to abort:")
+                user_input = input()
+                if user_input == "/":
+                    break
+                try:
+                    val = int(user_input)
+                    if val < 1 or len(list) < val:
+                        print("Number given is out of range.")
+                        continue
+                    print(list[val - 1][0])
+                    getfiles.get_single(ftp, list[val - 1][0] , list[val - 1][1])
+                    break
+                except ValueError:
+                    print("Input was not a valid number.")
         # 3.  Log off from remote server
         elif opt[1] == "3":
             print("You chose " + opt[1])
+            logout_resp = logoff.logoff(ftp)
+            if(logout_resp[0] == True):
+                print("\n" + logout_resp[1])
+            else:
+                print("Logout Failed")
+
         # 4.  Get multiple
         elif opt[1] == "4":
             print("You chose " + opt[1])
@@ -122,9 +147,24 @@ Enter your choice:
         # 6.  Put file onto remote server
         elif opt[1] == "6":
             print("You chose " + opt[1])
+            path = input(r"Please enter the path of the file you wish to upload(eg:C:\Users\jake\Desktop\uploads ): ")
+            filename = input("please type in file name you wish to upload with extention: ");
+            upload_path = input("Please enter the diretory path you want to upload the file to eg: /uploads : ")
+            putfile.put_file(ftp, path, filename, upload_path)
         # 7.  Put multiple
         elif opt[1] == "7":
             print("You chose " + opt[1])
+            add_more = True
+            while add_more == True:
+                path = input(r"Please enter the path of the file you wish to upload(eg:C:\Users\jake\Desktop\uploads ): ")
+                filename = input("please type in file name you wish to upload with extention: ");
+                upload_path = input("Please enter the diretory path you want to upload the file to eg: /uploads : ")
+                put_multi.put_multi_file(ftp, path, filename, upload_path)
+                ans = input("Do you wish to upload another file? yes/no : ")
+
+                if(ans == 'no'):
+                    add_more = False;
+
         # 8.  Create directory on remote server
         elif opt[1] == "8":
             print("You chose " + opt[1])
@@ -206,7 +246,16 @@ Enter your choice:
         # Attempt to login to server
         if opt[1] == "1":
             # Gather username somehow (through entry or saved connection, etc)
-            usr = os.environ['FTPUSR']
+            # usr = os.environ['FTPUSR']
+            # Get username
+            prompt = "Enter your username: ".rstrip('\n')
+            inputBuf = (False, "")
+            while (inputBuf[0] == False):
+                inputBuf = takeinput.takeInput(prompt)
+                if (inputBuf[0] == False):
+                    print(inputBuf[1])
+                else:
+                    usr = inputBuf[1]
 
             # Login to FTP server you are connected to
             serverResponse = loginsecure.loginSecure(ftp, usr)
@@ -267,7 +316,16 @@ Enter your choice:
         # Proccess user input
         # 1.  Connect to FTP server
         if opt[1] == "1":
-            ftpAddr = os.environ['FTPADDR']
+            # ftpAddr = os.environ['FTPADDR']
+            # Get ftp address
+            inputBuf = (False, "")
+            prompt = "Enter the FTP address: ".rstrip('\n')
+            while (inputBuf[0] == False):
+                inputBuf = takeinput.takeInput(prompt)
+                if (inputBuf[0] == False):
+                    print(inputBuf[1])
+                else:
+                    ftpAddr = inputBuf[1]
             
             # Attempt to connect to the server
             serverResponse = connectftp.connectFTP(ftpAddr)
@@ -381,7 +439,6 @@ Enter your choice:
                         # once they log in successfully they must then fully disconnect from
                         # the server with a ftp.quit()
                         ftp.quit()
-                        break
                     # If login was unsuccessful, display error message
                     else:
                         print("Error! Failed to log into server")
