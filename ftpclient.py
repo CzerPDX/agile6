@@ -21,6 +21,9 @@ import getfiles                 #
 import saveconnection           # Save a new connection information
 import renamefile
 import createremotedir
+
+import removeremotedir
+
 import logoff
 import saveconnection           # Save a new connection information
 
@@ -165,6 +168,7 @@ Enter your choice:
         # 8.  Create directory on remote server
         elif opt[1] == "8":
             print("You chose " + opt[1])
+            createremotedir.createDir(ftp)
         # 9. Delete file from remote server
         elif opt[1] == "9":
             print("You chose " + opt[1])
@@ -184,6 +188,7 @@ Enter your choice:
         # 12. Delete directories on remote server
         elif opt[1] == "12":
             print("You chose " + opt[1])
+            removeremotedir.removeDir(ftp)
         # 13. Save connection information
         elif opt[1] == "13":
             print("MOVED TO UPPER LEVEL OF UI")
