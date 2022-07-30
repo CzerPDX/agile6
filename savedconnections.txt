@@ -7,3 +7,4 @@ test label,test.ftp.address,testusername@test.ftp.address
 test label,test.ftp.address,testusername@test.ftp.address
 test label,test.ftp.address,testusername@test.ftp.address
 >>>>>>> 41e308fa6fd0b7161ef790cab197d28ea8089313
+ftpuser,127.0.0.1,ftpuser
