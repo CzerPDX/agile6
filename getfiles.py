@@ -8,7 +8,6 @@ def get_single(ftp, filename, is_directory):
         get_directory(ftp, filename)
     else:
         try:
-            print("filename passed to get_single is: " + filename)
             file_to_get = "RETR " + filename
             ftp.retrbinary(file_to_get, open(filename, 'wb').write)       # author/source: https://pythontic.com/ftplib/ftp/retrbinary
             return True
@@ -40,3 +39,7 @@ def list_files(ftp, include_directories):
                 return_file_list.append((line_fields[8], False))
 
     return return_file_list
+
+def get_multiple(ftp, file_list):
+    for file in file_list:
+        get_single(ftp, file[0], file[1])

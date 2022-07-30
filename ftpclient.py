@@ -17,7 +17,7 @@ import changepermissions
 import deletefile
 import listlocaldir
 import listremotedir 
-import getfiles                 #
+import getfiles                 # Functionality for downloading a single and multiple files
 import saveconnection           # Save a new connection information
 import renamefile
 import createremotedir
@@ -108,7 +108,7 @@ Enter your choice:
         # 2.  Get file from remote server
         elif opt[1] == "2":
             print("You chose " + opt[1])
-            print("Files available to download:\n")
+            print("Files available to download:")
             list = getfiles.list_files(ftp, False)
             for l in list:
                 print(str(list.index((l[0], l[1])) + 1) + " " + l[0])
@@ -123,7 +123,7 @@ Enter your choice:
                     if val < 1 or len(list) < val:
                         print("Number given is out of range.")
                         continue
-                    print(list[val - 1][0])
+                    print("File selected: " + list[val - 1][0])
                     getfiles.get_single(ftp, list[val - 1][0] , list[val - 1][1])
                     break
                 except ValueError:
@@ -140,6 +140,38 @@ Enter your choice:
         # 4.  Get multiple
         elif opt[1] == "4":
             print("You chose " + opt[1])
+            print("Files available to download:")
+            list = getfiles.list_files(ftp, False)
+            for l in list:
+                print(str(list.index((l[0], l[1])) + 1) + " " + l[0])
+            user_input = ""
+            files_to_get = []
+            bad_input_flag = False
+            while user_input != "/":
+                print("Please enter the number of each file to download separated by a space, or enter the slash character / to abort:")
+                user_input = input()
+                if user_input == "/":
+                    break
+                try:
+                    # Validate that each file chosen exists in the list
+                    for num in user_input.split(" "):
+                        val = int(num)
+                        if val < 1 or len(list) < val:
+                            bad_input_flag = True
+                            print("At least one number given is out of range.")
+                            break
+                        files_to_get.append(list[val - 1])
+                    if bad_input_flag:
+                        bad_input_flag = False
+                        continue
+                    print("Files selected for download: ", end='')
+                    for file in files_to_get:
+                        print(file[0] + " ", end='')
+                    print("\n")
+                    getfiles.get_multiple(ftp, files_to_get)
+                    break
+                except ValueError:
+                    print("Input was not a valid number.")
         # 5.  List directories & files on  local machine
         elif opt[1] == "5":
             print("You chose " + opt[1])
