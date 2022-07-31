@@ -5,6 +5,7 @@
 #   Logs all user input
 
 import logging
+from datetime import datetime
 
 # Returns tuple: (bool, str)
 # If user input is not empty, the str will be the user input: (True, [user input string])
@@ -18,13 +19,16 @@ def takeInput(prompt):
     assert len(prompt) > 0, "expected non-empty prompt. got: {}".format(prompt)
 
     userInput = input(prompt)
-    logging.info(userInput)
+
+    now = datetime.now()
+    logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: MENU OPTION: " + userInput)
 
     ret = (True, userInput)
 
     if userInput == "":
         ret = (False, "Error! Entry cannot be blank")
-        logging.error(ret[1])
+        now = datetime.now()
+        logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: INPUT: " + ret[1])
 
     # Postconditions
     # ret must be a tuple of size 2

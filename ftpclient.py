@@ -3,6 +3,7 @@ import logging
 import sys
 import os
 from ftplib import FTP
+from datetime import datetime
 
 ########################################
 # Add includes here for your files
@@ -26,6 +27,7 @@ import removeremotedir
 
 import logoff
 import saveconnection           # Save a new connection information
+import logtostring              # Functions for reading the input-and-errors log to a string
 
 # References:
 # FTPlib documentation: https://docs.python.org/3/library/ftplib.html
@@ -46,7 +48,8 @@ def invalidMenuInput(opt):
     else:
         errorMsg = "Error! " + opt[1] + " is not a valid entry. Please try again..."
         print(errorMsg)
-        logging.error(errorMsg)
+        now = datetime.now()
+        logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: MENU SELECTION: " + errorMsg)
 
 
 # Login menu that appears after you've logged into the ftp client
@@ -69,7 +72,7 @@ def postLoginMenu(ftp, welcomeMessage):
 6.  Put file onto remote server
 7.  Put multiple
 8.  Create directory on remote server
-9. Delete file from remote server
+9.  Delete file from remote server
 10. Change permissions on remote server
 11. Copy directories on remote server
 12. Delete directories on remote server
@@ -114,7 +117,7 @@ Enter your choice:
                 print(str(list.index((l[0], l[1])) + 1) + " " + l[0])
             user_input = ""
             while user_input != "/":
-                print("Please enter the number of the file to download or the slash character / to abort:")
+                print("Please enter the number of the file to download or the slash character / to abort:", end =" ")
                 user_input = input()
                 if user_input == "/":
                     break
@@ -123,8 +126,10 @@ Enter your choice:
                     if val < 1 or len(list) < val:
                         print("Number given is out of range.")
                         continue
-                    print("File selected: " + list[val - 1][0])
-                    getfiles.get_single(ftp, list[val - 1][0] , list[val - 1][1])
+                    print("File selected: " + list[val - 1][0] + "\n")
+                    if getfiles.get_single(ftp, list[val - 1][0] , list[val - 1][1]):
+                        now = datetime.now()
+                        logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: RETRIEVE FILE FROM FTP SERVER: File retrieved successfully.")
                     break
                 except ValueError:
                     print("Input was not a valid number.")
@@ -168,7 +173,9 @@ Enter your choice:
                     for file in files_to_get:
                         print(file[0] + " ", end='')
                     print("\n")
-                    getfiles.get_multiple(ftp, files_to_get)
+                    if getfiles.get_multiple(ftp, files_to_get):
+                        now = datetime.now()
+                        logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: RETRIEVE MULTIPLE FILES FROM FTP SERVER: Files retrieved successfully.")
                     break
                 except ValueError:
                     print("Input was not a valid number.")
@@ -237,6 +244,14 @@ Enter your choice:
         # 17. Log history
         elif opt[1] == "17":
             print("You chose " + opt[1])
+            log_string = logtostring.process_log_file("input-and-errors.log")
+            if log_string is not None:
+                print("\n======== LOG HISTORY ========\n" + log_string + "=======================\n")
+                now = datetime.now()
+                logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: PRINT LOG HISTORY: Successfully printed.")
+            else:
+                now = datetime.now()
+                logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: PRINT LOG HISTORY: Log history string could not be generated.")
         #Q.  Log off
         elif opt[1].lower() == "q":
             print("Logging out...")
@@ -373,7 +388,8 @@ Enter your choice:
             # Input is being taken in the UI because the function itself
             # will take the connection information as arguments.
             prompt = "Saving new FTP connection"
-            logging.info(prompt)
+            now = datetime.now()
+            logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: ADD NEW SAVED FTP SERVER: " + prompt)
 
             # Display UI
             print(prompt)
@@ -418,11 +434,13 @@ Enter your choice:
             # Now call the function to add the new connection info to the list
             try:
                 resp = saveconnection.saveConnection(label, ftpAddr, username)
-                logging.info(resp[1])
+                now = datetime.now()
+                logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: ADD NEW CONNECTION: " + resp[1])
                 print(resp[1])
             except Exception as err:
                 print(err)
-                logging.error(err)
+                now = datetime.now()
+                logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: ADD NEW CONNECTION: " + str(err))
         # Use saved connection information to connect
         elif opt[1] == "3":
             inputBuf = (False, "")

@@ -1,5 +1,6 @@
 import logging
 from ftplib import FTP
+from datetime import datetime
 
 # Returns a tuple of (bool, str)
 def loginSecure(ftp, usr):
@@ -13,17 +14,20 @@ def loginSecure(ftp, usr):
 
     resp = (True, "")
     # log username from attempted login
-    logging.info("Attempted login: " + usr)
+    now = datetime.now()
+    logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: LOGIN: " + "Attempted login: " + usr)
 
     # log into ftp server and return the login response from the server
     try:
         ftp.login(user=usr, passwd=input("enter pw: "))
-        resp = (True, ("\n" + ftp.getwelcome()))
-        logging.info(resp)
+        resp = (True, (ftp.getwelcome()))
+        now = datetime.now()
+        logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: LOGIN: SERVER MESSAGE: " + resp[1])
     # if an error occurs, return the error
     except Exception as err:
         resp = (False, str(err))
-        logging.error(err)
+        now = datetime.now()
+        logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: FTP LOGIN: " + str(err))
         
     print()
 
