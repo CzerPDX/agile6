@@ -1,13 +1,25 @@
 from ftplib import FTP
+import os  
 import logging
 
 
 def copyDir(ftp):
-    toCopy = input("Enter Name of Copy")
+
+    toCopy = input("Enter the Directory Name to Copy: ")
+    localPath = os.getcwd()
+    remotePath = ftp.pwd()
+
+    ftp.cwd(remotePath + toCopy)
+
+    newlocalPath = os.path.join(localPath, toCopy)
+    os.mkdir(newlocalPath)
+    os.chdir(newlocalPath)
+
     files = ftp.nlst()
+    print(files)
     for file in files:
         ftp.retrbinary("RETR "+file, open(file[1:], 'wb').write)
-    ftp.close
+
     
 
 
