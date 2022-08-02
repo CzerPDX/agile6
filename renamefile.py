@@ -2,10 +2,8 @@ import logging
 from ftplib import FTP
 from datetime import datetime
 
-def renameFile(ftp):
+def renameFile(ftp, fromName, toName):
 	
-	fromName = input('Which file do you want to rename?\n')
-	toName = input('What would you like to rename it to?\n')
 	try:
 		capture = ftp.rename(fromName, toName)
 		ret = (True, (capture))
@@ -18,6 +16,4 @@ def renameFile(ftp):
 		logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: RENAME FILE ON FTP SERVER: " + str(err))
 
 	return ret
-
-
 

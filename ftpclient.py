@@ -240,7 +240,9 @@ Enter your choice:
         # 15. Rename file on remote server
         elif opt[1] == "15":
             print("You chose " + opt[1])
-            renamefile.renameFile(ftp)
+            fileToRename = takeinput.takeInput('Which file do you want to rename?\n')
+            newName = takeinput.takeInput('What would you like to rename it to?\n')
+            response = renamefile.renameFile(ftp, fileToRename, newName)
         # 16. Timeout after idle time
         elif opt[1] == "16":
             print("You chose " + opt[1])
