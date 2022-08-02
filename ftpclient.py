@@ -20,6 +20,8 @@ import listlocaldir
 import listremotedir 
 import getfiles                 # Functionality for downloading a single and multiple files
 import saveconnection           # Save a new connection information
+import rename_local
+
 import renamefile
 import createremotedir
 
@@ -84,6 +86,7 @@ def postLoginMenu(ftp, welcomeMessage):
 15. Rename file on remote server
 16. Timeout after idle time
 17. Log history
+18. Rename local file
 
 Q.  Log off
 
@@ -231,15 +234,15 @@ Enter your choice:
         # 9. Delete file from remote server
         elif opt[1] == "9":
             print("You chose " + opt[1])
-            fileName = input("Please enter file or directory to delete: ")
-            ftpResponse = deletefile.deleteFile(ftp, fileName)
+            fileName = takeinput.takeInput("Please enter file or directory to delete: ")
+            ftpResponse = deletefile.deleteFile(ftp, fileName[1])
             print(ftpResponse)
         # 10. Change permissions on remote server
         elif opt[1] == "10":
             print("You chose " + opt[1])
-            chmodKey = input("Please enter 3 digit chmod key: ")
-            fileName = input("Please enter file or directory name to change permissions: ")
-            ftpResponse = changepermissions.changePermissions(ftp, chmodKey, fileName)
+            chmodKey = takeinput.takeInput("Please enter 3 digit chmod key: ")
+            fileName = takeinput.takeInput("Please enter file or directory name to change permissions: ")
+            ftpResponse = changepermissions.changePermissions(ftp, chmodKey[1], fileName[1])
             print(ftpResponse)
         # 11. Copy directories on remote server
         elif opt[1] == "11":
@@ -258,10 +261,13 @@ Enter your choice:
         # 15. Rename file on remote server
         elif opt[1] == "15":
             print("You chose " + opt[1])
-            renamefile.renameFile(ftp)
+            fileToRename = takeinput.takeInput('Which file do you want to rename?\n')
+            newName = takeinput.takeInput('What would you like to rename it to?\n')
+            response = renamefile.renameFile(ftp, fileToRename[1], newName[1])
         # 16. Timeout after idle time
         elif opt[1] == "16":
             print("You chose " + opt[1])
+
         # 17. Log history
         elif opt[1] == "17":
             print("You chose " + opt[1])
@@ -273,6 +279,19 @@ Enter your choice:
             else:
                 now = datetime.now()
                 logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: PRINT LOG HISTORY: Log history string could not be generated.")
+
+        # 18. Rename local file
+        elif opt[1] == "18":
+            print("You chose " + opt[1])
+            old = takeinput.takeInput("Please enter relative path to local file you want to rename: ")
+            new = takeinput.takeInput("Please enter the relative path of the new name of the file: ")
+            ftpResponse = rename_local.renameLocal(old[1], new[1])
+            if(ftpResponse == True):
+                print("\nLocal file successfully renamed")
+            else:
+                print("\nError renaming file")
+
+
         #Q.  Log off
         elif opt[1].lower() == "q":
             print("Logging out...")
