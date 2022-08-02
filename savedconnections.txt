@@ -1,15 +1,8 @@
 real login,ftptest.portlandredbird.com,testacct@ftptest.portlandredbird.com
 new test,added.com.ftp.bah,myusernmaeeeeee
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> 21a1c14a2cb3897bb3ec6d31982868a03c8eedb1
+
 test label,test.ftp.address,testusername@test.ftp.address
 test label,test.ftp.address,testusername@test.ftp.address
 test label,test.ftp.address,testusername@test.ftp.address
 test label,test.ftp.address,testusername@test.ftp.address
-<<<<<<< HEAD
-=======
->>>>>>> 41e308fa6fd0b7161ef790cab197d28ea8089313
->>>>>>> 21a1c14a2cb3897bb3ec6d31982868a03c8eedb1
+
