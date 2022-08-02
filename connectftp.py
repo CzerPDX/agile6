@@ -11,7 +11,7 @@ def connectFTP(ftpAddr):
     logging.info("Attempted FTP conection to: " + ftpAddr)
     
     try: 
-        resp = (True, FTP(ftpAddr))
+        resp = (True, FTP(ftpAddr, timeout=1))
     except Exception as err:
         resp = (False, str(err))
         logging.error(err)
