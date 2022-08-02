@@ -27,6 +27,9 @@ import createremotedir
 
 import removeremotedir
 
+import copyremotedir
+
+
 import logoff
 import saveconnection           # Save a new connection information
 import logtostring              # Functions for reading the input-and-errors log to a string
@@ -188,29 +191,46 @@ Enter your choice:
             listlocaldir.listLocal()
         # 6.  Put file onto remote server
         elif opt[1] == "6":
-            print("You chose " + opt[1])
-            path = input(r"Please enter the path of the file you wish to upload(eg:C:\Users\jake\Desktop\uploads ): ")
-            filename = input("please type in file name you wish to upload with extention: ");
-            upload_path = input("Please enter the diretory path you want to upload the file to eg: /uploads : ")
-            putfile.put_file(ftp, path, filename, upload_path)
-        # 7.  Put multiple
-        elif opt[1] == "7":
-            print("You chose " + opt[1])
-            add_more = True
-            while add_more == True:
-                path = input(r"Please enter the path of the file you wish to upload(eg:C:\Users\jake\Desktop\uploads ): ")
-                filename = input("please type in file name you wish to upload with extention: ");
-                upload_path = input("Please enter the diretory path you want to upload the file to eg: /uploads : ")
-                put_multi.put_multi_file(ftp, path, filename, upload_path)
-                ans = input("Do you wish to upload another file? yes/no : ")
+            path = ""
+            filename = ""
+            uploadPath = ""
 
-                if(ans == 'no'):
-                    add_more = False;
+            print("You chose " + opt[1])
+
+            fileInfo = putFilesUI()
+            resp = (False, "")
+
+            if fileInfo[0] == True:
+                print("File info = ", fileInfo)
+                resp = putfile.put_file(ftp, fileInfo[1], fileInfo[2], fileInfo[3])
+            
+            print("resp = ", resp)
+                
+        # 7.  Put multiple
+        # elif opt[1] == "7":
+        #     print("You chose " + opt[1])
+        #     add_more = True
+        #     while add_more == True:
+        #         path = input(r"Please enter the path of the file you wish to upload(eg:C:\Users\jake\Desktop\uploads ): ")
+        #         filename = input("please type in file name you wish to upload with extention: ");
+        #         upload_path = input("Please enter the diretory path you want to upload the file to eg: /uploads : ")
+        #         put_multi.put_multi_file(ftp, path, filename, upload_path)
+        #         ans = input("Do you wish to upload another file? yes/no : ")
+
+        #         if(ans == 'no'):
+        #             add_more = Falses
 
         # 8.  Create directory on remote server
         elif opt[1] == "8":
-            print("You chose " + opt[1])
-            createremotedir.createDir(ftp)
+            prompt = "What is the name of the new directory you'd like to add?"
+            # Take input from user and log it
+            opt = takeinput.takeInput(prompt)
+            
+            if opt[0] == True:
+                createremotedir.createDir(ftp, opt[1])
+            else:
+                print(opt[0])
+            
         # 9. Delete file from remote server
         elif opt[1] == "9":
             print("You chose " + opt[1])
@@ -227,6 +247,7 @@ Enter your choice:
         # 11. Copy directories on remote server
         elif opt[1] == "11":
             print("You chose " + opt[1])
+            copyremotedir.copyDir(ftp)
         # 12. Delete directories on remote server
         elif opt[1] == "12":
             print("You chose " + opt[1])
@@ -344,6 +365,51 @@ Enter your choice:
             print()
         else:
             invalidMenuInput(opt)
+
+def putFilesUI():
+    # Get file path
+    prompt = "Enter the filepath of the file to upload: "
+    #inputBuf = takeinput.takeInput(prompt)
+    ret = (False, "", "", "")
+    path = ""
+    filename = ""
+    uploadPath = ""
+
+    inputBuf = takeinput.takeInput(prompt)
+
+    # Check for errors in input
+    if inputBuf[0] == True:
+        path = inputBuf[1]
+
+        # Get filename
+        prompt = "Please type in file name you wish to upload with extention: "
+        inputBuf = takeinput.takeInput(prompt)
+
+        # Check for errors in input
+        if inputBuf[0] == True:
+            filename = inputBuf[1]
+
+            # Get directory path
+            prompt = "Please enter the diretory path you want to upload the file to eg: /uploads : "
+            inputBuf = takeinput.takeInput(prompt)
+
+            # Check for errors in input
+            if inputBuf[0] == True:
+                uploadPath = inputBuf[1]
+
+                # return tuple
+                if inputBuf[0] == True:
+                    ret = (True, path, filename, uploadPath)
+                else:
+                    print(resp[1])
+            else:
+                print(inputBuf[1])
+        else:
+            print(inputBuf[1])
+    else:
+        print(inputBuf[1])
+
+    return ret
 
 
 # Main

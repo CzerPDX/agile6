@@ -12,7 +12,7 @@ def connectFTP(ftpAddr):
     logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: CONNECT TO FTP SERVER: Connected to: " + ftpAddr)
     
     try: 
-        resp = (True, FTP(ftpAddr))
+        resp = (True, FTP(ftpAddr, timeout=1))
     except Exception as err:
         resp = (False, str(err))
         now = datetime.now()
