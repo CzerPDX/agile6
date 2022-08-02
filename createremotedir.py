@@ -2,10 +2,10 @@ from ftplib import FTP
 import logging
 from datetime import datetime
 
-def createDir(ftp):
+def createDir(ftp, newDir):
 
     #Ask for a the name of the new directory
-    newDir = input("What is the name of the new directory?")
+    
     
     try:
         capture = ftp.mkd(newDir)
