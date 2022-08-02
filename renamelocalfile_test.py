@@ -4,10 +4,7 @@ import os
 import rename_local
 from os.path import exists
 
-
-
-## connected and in a valid directory ## 
-def rename_local_file_test(monkeypatch):    
+def test_rename_local_file():    
 
     #create a new file to be renamed then deleted
     fp = open('test.txt', 'x')
@@ -15,8 +12,8 @@ def rename_local_file_test(monkeypatch):
     fp.close
 
     #rename and delete if successful
-    assert(rename_local.renameLocal('.test.txt','.newTest.txt') == True)
-    if(exists('.test.txt')):
-        os.remove('.test.txt')
-    elif(exists('.newTest.txt')):
-        os.remove('.newTest.txt')
+    assert(rename_local.renameLocal('./test.txt','./newTest.txt') == True)
+    if(exists('./newTest.txt')):
+        os.remove('./newTest.txt')
+    else:
+        os.remove('./test.txt')
