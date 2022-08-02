@@ -1,26 +1,23 @@
 import logging
 from ftplib import FTP
-
+from datetime import datetime
 
 def renameFile(ftp):
 	
 	fromName = input('Which file do you want to rename?\n')
-	# Check if the file exists on the remote server.
-	fileExist = findName(fromName, ftp)
 	toName = input('What would you like to rename it to?\n')
-	# Check if the name is duplicate
-	isDuplicate = findName(toName, ftp)
+	try:
+		capture = ftp.rename(fromName, toName)
+		ret = (True, (capture))
+		now = datetime.now()
+		logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: RENAME FILE ON FTP SERVER: Files Renamed.")
 
-	
-	ftp.rename(fromName, toName)
+	except Exception as err:
+		ret = (False, err)
+		now = datetime.now()
+		logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: RENAME FILE ON FTP SERVER: " + str(err))
+
+	return ret
 
 
-def findName(toFind, ftp):
-	
-	fileNames = ftp.nlst(ftp.pwd())
-	i = 0
-	while i > len(fileNames):
-		if(fileNames[i] == toFind):
-			return True
-	return False
 

@@ -1,8 +1,1 @@
 real login,ftptest.portlandredbird.com,testacct@ftptest.portlandredbird.com
-new test,added.com.ftp.bah,myusernmaeeeeee
-
-test label,test.ftp.address,testusername@test.ftp.address
-test label,test.ftp.address,testusername@test.ftp.address
-test label,test.ftp.address,testusername@test.ftp.address
-test label,test.ftp.address,testusername@test.ftp.address
-

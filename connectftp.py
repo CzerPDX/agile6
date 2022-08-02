@@ -1,6 +1,6 @@
 import logging
 from ftplib import FTP
-
+from datetime import datetime
 
 def connectFTP(ftpAddr):
     # Preconditions
@@ -8,13 +8,15 @@ def connectFTP(ftpAddr):
     assert isinstance(ftpAddr, str), "expected type(ftpAddr) == str. got type: {}".format(type(ftpAddr))
 
     # log FTP address from attempted connection
-    logging.info("Attempted FTP conection to: " + ftpAddr)
+    now = datetime.now()
+    logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: CONNECT TO FTP SERVER: Connected to: " + ftpAddr)
     
     try: 
         resp = (True, FTP(ftpAddr))
     except Exception as err:
         resp = (False, str(err))
-        logging.error(err)
+        now = datetime.now()
+        logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: CONNECT TO FTP SERVER: Failed FTP connection to: " + str(err))
 
     # Postconditions
     # Returns type: tuple of size 2

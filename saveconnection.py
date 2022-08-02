@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 SAVED_CONNECTIONS_FILE = "savedconnections.txt"   # Filename to save connections to
 
@@ -26,15 +27,18 @@ def checkCommas(label, ftpAddr, username):
     if (comma in label):
         err = "Error. Commas are not allowed in saved connection entries. \"" + label + "\" contains a comma."
         ret = (False, err)
-        logging.error(err)
+        now = datetime.now()
+        logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: INPUT: " + err)
     elif (comma in ftpAddr):
         err = "Error. Commas are not allowed in saved connection entries. \"" + ftpAddr + "\" contains a comma."
         ret = (False, err)
-        logging.error(err)
+        now = datetime.now()
+        logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: INPUT: " + err)
     elif (comma in username):
         err = "Error. Commas are not allowed in saved connection entries. \"" + username + "\" contains a comma."
         ret = (False, err)
-        logging.error(err)
+        now = datetime.now()
+        logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: INPUT: " + err)
 
     # Postconditions
     # ret must be a tuple of size 2
@@ -67,7 +71,8 @@ def saveConnection(label, ftpAddr, username, filename=SAVED_CONNECTIONS_FILE):
         ret = checkCommas(label, ftpAddr, username)
     except Exception as err:
         ret = (False, str(err))
-        logging.error(err)
+        now = datetime.now()
+        logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: INPUT: " + str(err))
 
     # Append the new entry to the file: add label, ftp, and username to file (comma delimited)
     if (ret[0] == True):
@@ -76,7 +81,8 @@ def saveConnection(label, ftpAddr, username, filename=SAVED_CONNECTIONS_FILE):
         except Exception as err:
             # pass error back out to the UI
             ret = (False, str(err))
-            logging.error(err)
+            now = datetime.now()
+            logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: " + str(err))
 
     # Write to the file
     if (ret[0] == True):
@@ -84,11 +90,13 @@ def saveConnection(label, ftpAddr, username, filename=SAVED_CONNECTIONS_FILE):
             writeToFile = label + "," + ftpAddr + "," + username + '\n'
             f.write(writeToFile)
             successMsg = "Successfully added new connection information: " + writeToFile.rstrip('\n')
-            logging.info(successMsg)
+            now = datetime.now()
+            logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: NEW CONNECTION INFORMATION: " + successMsg)
         except Exception as err:
             # pass error back out to the UI
             ret = (False, str(err))
-            logging.error(err)
+            now = datetime.now()
+            logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: " + str(err))
 
     # Close the file
     if (ret[0] == True):
@@ -98,7 +106,8 @@ def saveConnection(label, ftpAddr, username, filename=SAVED_CONNECTIONS_FILE):
         except Exception as err:
             # pass error back out to the UI
             ret = (False, str(err))
-            logging.error(err)
+            now = datetime.now()
+            logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: " + str(err))
 
     
     # Postconditions

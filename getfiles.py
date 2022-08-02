@@ -1,19 +1,22 @@
 # Jonas Persson
 # CS410 Agile Summer 2022 Portland State
 import sys
+import logging
 from io import StringIO
+from datetime import datetime
 
 def get_single(ftp, filename, is_directory):
+
     if is_directory:
         get_directory(ftp, filename)
     else:
         try:
-            print("filename passed to get_single is: " + filename)
             file_to_get = "RETR " + filename
             ftp.retrbinary(file_to_get, open(filename, 'wb').write)       # author/source: https://pythontic.com/ftplib/ftp/retrbinary
             return True
-        except Exception:                                                 # wb - indicates binary write mode
-            print("An error occurred trying to retrieve this file: " + filename)
+        except Exception as err:                                                 # wb - indicates binary write mode
+            now = datetime.now()
+            logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: RETRIEVE FILE FROM FTP SERVER: " + filename + ": Server response was: " + str(err))
             return False
 
     return False
@@ -40,3 +43,11 @@ def list_files(ftp, include_directories):
                 return_file_list.append((line_fields[8], False))
 
     return return_file_list
+
+def get_multiple(ftp, file_list):
+    success_flag = True
+    for file in file_list:
+        if get_single(ftp, file[0], file[1]) is False:
+            success_flag = False
+    return success_flag
+    
