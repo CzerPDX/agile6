@@ -9,6 +9,13 @@ def renameFile(ftp):
 	try:
 		capture = ftp.rename(fromName, toName)
 		ret = (True, (capture))
+
+		logging.info("Files Renamed")
+
+	except Exception as err:
+		ret = (False, err)
+		logging.error(err)
+
 		now = datetime.now()
 		logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: RENAME FILE ON FTP SERVER: Files Renamed.")
 

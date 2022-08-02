@@ -25,6 +25,9 @@ import createremotedir
 
 import removeremotedir
 
+import copyremotedir
+
+
 import logoff
 import saveconnection           # Save a new connection information
 import logtostring              # Functions for reading the input-and-errors log to a string
@@ -241,6 +244,7 @@ Enter your choice:
         # 11. Copy directories on remote server
         elif opt[1] == "11":
             print("You chose " + opt[1])
+            copyremotedir.copyDir(ftp)
         # 12. Delete directories on remote server
         elif opt[1] == "12":
             print("You chose " + opt[1])
