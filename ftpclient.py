@@ -20,7 +20,7 @@ import listlocaldir
 import listremotedir 
 import getfiles                 # Functionality for downloading a single and multiple files
 import saveconnection           # Save a new connection information
-import rename_local
+import renamelocal
 
 import renamefile
 import createremotedir
@@ -299,7 +299,7 @@ Enter your choice:
             print("You chose " + opt[1])
             old = takeinput.takeInput("Please enter relative path to local file you want to rename: ")
             new = takeinput.takeInput("Please enter the relative path of the new name of the file: ")
-            ftpResponse = rename_local.renameLocal(old[1], new[1])
+            ftpResponse = renamelocal.renameLocal(old[1], new[1])
             if(ftpResponse == True):
                 print("\nLocal file successfully renamed")
             else:
