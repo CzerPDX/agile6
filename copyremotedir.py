@@ -3,9 +3,7 @@ import os
 import logging
 
 
-def copyDir(ftp):
-
-    toCopy = input("Enter the Directory Name to Copy: ")
+def copyDir(ftp, toCopy):
     localPath = os.getcwd()
     remotePath = ftp.pwd()
 
@@ -19,6 +17,4 @@ def copyDir(ftp):
 
     files = files[1:-1]
     for file in files:
-        print(file)
         ftp.retrbinary("RETR "+file, open(file[0:], 'wb').write)
-    print(files)

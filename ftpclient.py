@@ -247,7 +247,8 @@ Enter your choice:
         # 11. Copy directories on remote server
         elif opt[1] == "11":
             print("You chose " + opt[1])
-            copyremotedir.copyDir(ftp)
+            toCopy = input("Enter the directory name to copy: ")
+            copyremotedir.copyDir(ftp, toCopy)
         # 12. Delete directories on remote server
         elif opt[1] == "12":
             print("You chose " + opt[1])
