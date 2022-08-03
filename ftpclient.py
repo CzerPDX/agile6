@@ -348,13 +348,21 @@ Enter your choice:
             ftpResponse = changepermissions.changePermissions(ftp, chmodKey[1], fileName[1])
             print(ftpResponse)
 
+        # 11. Copy directories on remote server
+        elif opt[1] == "11":
+            print("You chose " + opt[1])
+            toCopy = input("Enter the directory name to copy: ")
+            copyremotedir.copyDir(ftp, toCopy)
+        # 12. Delete directories on remote server
+
+
         # 10. Copy directories on remote server
         elif opt[1] == "10":
             # Print the title
             title = "Copy directories on remote server"
             printTitle(title)
-
-            copyremotedir.copyDir(ftp)
+            toCopy = input("Enter the directory name to copy: ")
+            copyremotedir.copyDir(ftp, toCopt)
 
         # 11. Delete directories on remote server
         elif opt[1] == "11":
@@ -371,6 +379,7 @@ Enter your choice:
             print(inputBuf)
 
         # 12. Rename file on remote server
+
         elif opt[1] == "12":
             # Print the title
             title = "Rename file on remote server"
