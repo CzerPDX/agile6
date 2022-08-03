@@ -3,28 +3,22 @@ import logging
 from datetime import datetime
 
 def createDir(ftp, newDir):
+    ret = (False, "")
 
     #Ask for a the name of the new directory
-    
-    
     try:
         capture = ftp.mkd(newDir)
-        ret = (True, (capture))
+        ret = (True, str(capture))
 
-        logging.info("Directory Created")
-    
+        now = datetime.now()
+        logging.info(now.strftime("%m/%d/%Y %H:%M:%S INFO: ") + str(capture))
+
     except Exception as err:
-        ret = (False, err)
+        ret = (False, str(err))
         logging.error(err)
 
         now = datetime.now()
-        logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: CREATE DIRECTORY ON FTP SERVER: Directory Created")
-    
-    except Exception as err:
-        ret = (False, err)
-        now = datetime.now()
-        logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: CREATE DIRECTORY ON FTP SERVER: " + str(err))
-
+        logging.info(now.strftime("%m/%d/%Y %H:%M:%S ERROR: ") + str(err))
 
     return ret
 

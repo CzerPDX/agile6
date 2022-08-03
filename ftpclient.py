@@ -231,19 +231,16 @@ Enter your choice:
                             logging.error(errMsg)
                     else:
                         print(inputBuf[1])
-                        
-                    
 
         # 8.  Create directory on remote server
         elif opt[1] == "8":
             prompt = "What is the name of the new directory you'd like to add?"
             # Take input from user and log it
-            opt = takeinput.takeInput(prompt)
+            inputBuf = takeinput.takeInput(prompt)
             
-            if opt[0] == True:
-                createremotedir.createDir(ftp, opt[1])
-            else:
-                print(opt[0])
+            if inputBuf[0] == True:
+                server_response = createremotedir.createDir(ftp, inputBuf[1])
+            print(server_response)
             
         # 9. Delete file from remote server
         elif opt[1] == "9":
@@ -264,8 +261,13 @@ Enter your choice:
             copyremotedir.copyDir(ftp)
         # 12. Delete directories on remote server
         elif opt[1] == "12":
-            print("You chose " + opt[1])
-            removeremotedir.removeDir(ftp)
+            prompt = "What is the name of the directory you'd like to remove?"
+            # Take input from user and log it
+            inputBuf = takeinput.takeInput(prompt)
+            
+            if inputBuf[0] == True:
+                removeremotedir.removeDir(ftp, inputBuf[1])
+            print(inputBuf)
         # 13. Save connection information
         elif opt[1] == "13":
             print("MOVED TO UPPER LEVEL OF UI")

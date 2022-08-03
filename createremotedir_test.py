@@ -1,6 +1,7 @@
 import pytest
 import os
 import createremotedir
+import removeremotedir
 import connectftp
 import loginsecure
 
@@ -20,9 +21,28 @@ def test_listRemote_valid_input(monkeypatch):
     monkeypatch.setattr('builtins.input', lambda _: password)
     loginsecure.loginSecure(ftp, usr)
 
-    #call list remote
-    server_response = createremotedir.createDir(ftp)
+    # Set up a directory in a valid location
+    testDir = "testDir"       # name of the test directory
+
+    # Check if the directory exists already on the ftp server
+    
+
+    #   Delete the test directory if it already exists
+    removeremotedir.removeDir(ftp, testDir)
+    
+    # Then use createremotedir function to create the testDir
+    server_response = createremotedir.createDir(ftp, testDir)
     assert server_response[0] == True
+
+    # Then delete the test directory
+    exists = os.path.isdir(testDir)
+    if (exists):
+        ftp.rmd(ftp, testDir)
+    exists = os.path.exists(testDir)
+    assert exists == False, "Delete did not work. Test directory testDir still exists".format(type(ftpAddr))
+    
+
+
 
 # Close FTP connection
     ftp.quit()
