@@ -1,6 +1,7 @@
 import pytest
 import os
 import removeremotedir
+import createremotedir
 import connectftp
 import loginsecure
 
@@ -20,8 +21,14 @@ def test_listRemote_valid_input(monkeypatch):
     monkeypatch.setattr('builtins.input', lambda _: password)
     loginsecure.loginSecure(ftp, usr)
 
+    # Create a test directory name
+    testDir = "testDir"
+
+    # Add a test directory to the ftp server
+    createremotedir.createDir(ftp, testDir)
+
     #call list remote
-    server_response = removeremotedir.removeDir(ftp)
+    server_response = removeremotedir.removeDir(ftp, testDir)
     assert server_response[0] == True
 
 # Close FTP connection
