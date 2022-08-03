@@ -4,24 +4,21 @@ from ftplib import FTP
 from datetime import datetime
 
 
-def removeDir(ftp):
-    toRemove = input("Enter Directory Name:")
+def removeDir(ftp, toRemove):
+    ret = (False, "")
+
     try:
         capture = ftp.rmd(toRemove)
-        ret = (True, (capture))
+        ret = (True, str(capture))
 
-        logging.info("Directory Removed")
+        logMsg = "Directory Removed. Response: " + str(capture)
+        logging.info(logMsg)
 
     except Exception as err:
         ret = (False, err)
         logging.error(err)
 
         now = datetime.now()
-        logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: DELETE DIRECTORY ON FTP SERVER: Directory Removed.")
+        logging.info(now.strftime("%m/%d/%Y %H:%M:%S RESPONSE: ") + str(err))
 
-    except Exception as err:
-        ret = (False, err)
-        now = datetime.now()
-        logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: DELETE DIRECTORY ON FTP SERVER: " + str(err))
-    
     return ret

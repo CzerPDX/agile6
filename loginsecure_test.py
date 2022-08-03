@@ -45,9 +45,6 @@ def test_loginSecure_bad_password(monkeypatch):
     serverResponse = loginsecure.loginSecure(ftp, usr)
     assert serverResponse[0] == False
 
-    # Close FTP connection
-    ftp.quit()
-
 # Test with bad username
 def test_loginSecure_bad_username(monkeypatch):
     # Establish FTP connection
