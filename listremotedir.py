@@ -2,6 +2,7 @@ import logging
 from ftplib import FTP
 from datetime import datetime
 
+
 def listRemote(ftp):
     print("Remote files and directories: ")
     try:
