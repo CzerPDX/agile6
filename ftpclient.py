@@ -191,34 +191,48 @@ Enter your choice:
             listlocaldir.listLocal()
         # 6.  Put file onto remote server
         elif opt[1] == "6":
-            path = ""
-            filename = ""
-            uploadPath = ""
-
-            print("You chose " + opt[1])
-
+            print("Put a file onto the remote server")
+            print()
             fileInfo = putFilesUI()
             resp = (False, "")
 
             if fileInfo[0] == True:
-                print("File info = ", fileInfo)
                 resp = putfile.put_file(ftp, fileInfo[1], fileInfo[2], fileInfo[3])
             
-            print("resp = ", resp)
                 
         # 7.  Put multiple
-        # elif opt[1] == "7":
-        #     print("You chose " + opt[1])
-        #     add_more = True
-        #     while add_more == True:
-        #         path = input(r"Please enter the path of the file you wish to upload(eg:C:\Users\jake\Desktop\uploads ): ")
-        #         filename = input("please type in file name you wish to upload with extention: ");
-        #         upload_path = input("Please enter the diretory path you want to upload the file to eg: /uploads : ")
-        #         put_multi.put_multi_file(ftp, path, filename, upload_path)
-        #         ans = input("Do you wish to upload another file? yes/no : ")
+        elif opt[1] == "7":
+            print("Put multiple files onto the remote server")
+            print()
+            add_more = True
+            ans = ""
+            while add_more == True:
+                fileInfo = putFilesUI()
+                resp = (False, "")
 
-        #         if(ans == 'no'):
-        #             add_more = Falses
+
+                if fileInfo[0] == True:
+                    resp = putfile.put_file(ftp, fileInfo[1], fileInfo[2], fileInfo[3])
+
+                print(resp[1])
+
+                while (ans != "no") and (ans != "yes"):
+                    prompt = "Do you wish to upload another file? yes/no: "
+                    inputBuf = takeinput.takeInput(prompt)
+
+                    if inputBuf[0] == True:
+                        ans = inputBuf[1]
+                        if(ans == 'no'):
+                            add_more = False
+                        if(ans == 'yes'):
+                            add_more = True
+                        else:
+                            errMsg = ans[1] + " is not a valid entry. Please enter 'yes' or 'no'"
+                            logging.error(errMsg)
+                    else:
+                        print(inputBuf[1])
+                        
+                    
 
         # 8.  Create directory on remote server
         elif opt[1] == "8":
