@@ -16,7 +16,9 @@ def copyDir(ftp):
     os.chdir(newlocalPath)
 
     files = ftp.nlst()
+
     files = files[1:-1]
     for file in files:
         print(file)
         ftp.retrbinary("RETR "+file, open(file[0:], 'wb').write)
+    print(files)

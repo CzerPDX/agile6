@@ -20,6 +20,8 @@ import listlocaldir
 import listremotedir 
 import getfiles                 # Functionality for downloading a single and multiple files
 import saveconnection           # Save a new connection information
+import renamelocal
+
 import renamefile
 import createremotedir
 
@@ -84,6 +86,7 @@ def postLoginMenu(ftp, welcomeMessage):
 15. Rename file on remote server
 16. Timeout after idle time
 17. Log history
+18. Rename local file
 
 Q.  Log off
 
@@ -188,41 +191,58 @@ Enter your choice:
             listlocaldir.listLocal()
         # 6.  Put file onto remote server
         elif opt[1] == "6":
-            print("You chose " + opt[1])
-            path = input(r"Please enter the path of the file you wish to upload(eg:C:\Users\jake\Desktop\uploads ): ")
-            filename = input("please type in file name you wish to upload with extention: ");
-            upload_path = input("Please enter the diretory path you want to upload the file to eg: /uploads : ")
-            putfile.put_file(ftp, path, filename, upload_path)
-        # 7.  Put multiple
-        elif opt[1] == "7":
-            print("You chose " + opt[1])
-            add_more = True
-            while add_more == True:
-                path = input(r"Please enter the path of the file you wish to upload(eg:C:\Users\jake\Desktop\uploads ): ")
-                filename = input("please type in file name you wish to upload with extention: ");
-                upload_path = input("Please enter the diretory path you want to upload the file to eg: /uploads : ")
-                put_multi.put_multi_file(ftp, path, filename, upload_path)
-                ans = input("Do you wish to upload another file? yes/no : ")
+            path = ""
+            filename = ""
+            uploadPath = ""
 
-                if(ans == 'no'):
-                    add_more = False;
+            print("You chose " + opt[1])
+
+            fileInfo = putFilesUI()
+            resp = (False, "")
+
+            if fileInfo[0] == True:
+                print("File info = ", fileInfo)
+                resp = putfile.put_file(ftp, fileInfo[1], fileInfo[2], fileInfo[3])
+            
+            print("resp = ", resp)
+                
+        # 7.  Put multiple
+        # elif opt[1] == "7":
+        #     print("You chose " + opt[1])
+        #     add_more = True
+        #     while add_more == True:
+        #         path = input(r"Please enter the path of the file you wish to upload(eg:C:\Users\jake\Desktop\uploads ): ")
+        #         filename = input("please type in file name you wish to upload with extention: ");
+        #         upload_path = input("Please enter the diretory path you want to upload the file to eg: /uploads : ")
+        #         put_multi.put_multi_file(ftp, path, filename, upload_path)
+        #         ans = input("Do you wish to upload another file? yes/no : ")
+
+        #         if(ans == 'no'):
+        #             add_more = Falses
 
         # 8.  Create directory on remote server
         elif opt[1] == "8":
-            print("You chose " + opt[1])
-            createremotedir.createDir(ftp)
+            prompt = "What is the name of the new directory you'd like to add?"
+            # Take input from user and log it
+            opt = takeinput.takeInput(prompt)
+            
+            if opt[0] == True:
+                createremotedir.createDir(ftp, opt[1])
+            else:
+                print(opt[0])
+            
         # 9. Delete file from remote server
         elif opt[1] == "9":
             print("You chose " + opt[1])
-            fileName = input("Please enter file or directory to delete: ")
-            ftpResponse = deletefile.deleteFile(ftp, fileName)
+            fileName = takeinput.takeInput("Please enter file or directory to delete: ")
+            ftpResponse = deletefile.deleteFile(ftp, fileName[1])
             print(ftpResponse)
         # 10. Change permissions on remote server
         elif opt[1] == "10":
             print("You chose " + opt[1])
-            chmodKey = input("Please enter 3 digit chmod key: ")
-            fileName = input("Please enter file or directory name to change permissions: ")
-            ftpResponse = changepermissions.changePermissions(ftp, chmodKey, fileName)
+            chmodKey = takeinput.takeInput("Please enter 3 digit chmod key: ")
+            fileName = takeinput.takeInput("Please enter file or directory name to change permissions: ")
+            ftpResponse = changepermissions.changePermissions(ftp, chmodKey[1], fileName[1])
             print(ftpResponse)
         # 11. Copy directories on remote server
         elif opt[1] == "11":
@@ -241,10 +261,13 @@ Enter your choice:
         # 15. Rename file on remote server
         elif opt[1] == "15":
             print("You chose " + opt[1])
-            renamefile.renameFile(ftp)
+            fileToRename = takeinput.takeInput('Which file do you want to rename?\n')
+            newName = takeinput.takeInput('What would you like to rename it to?\n')
+            response = renamefile.renameFile(ftp, fileToRename[1], newName[1])
         # 16. Timeout after idle time
         elif opt[1] == "16":
             print("You chose " + opt[1])
+
         # 17. Log history
         elif opt[1] == "17":
             print("You chose " + opt[1])
@@ -256,6 +279,19 @@ Enter your choice:
             else:
                 now = datetime.now()
                 logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: PRINT LOG HISTORY: Log history string could not be generated.")
+
+        # 18. Rename local file
+        elif opt[1] == "18":
+            print("You chose " + opt[1])
+            old = takeinput.takeInput("Please enter relative path to local file you want to rename: ")
+            new = takeinput.takeInput("Please enter the relative path of the new name of the file: ")
+            ftpResponse = renamelocal.renameLocal(old[1], new[1])
+            if(ftpResponse == True):
+                print("\nLocal file successfully renamed")
+            else:
+                print("\nError renaming file")
+
+
         #Q.  Log off
         elif opt[1].lower() == "q":
             print("Logging out...")
@@ -329,6 +365,51 @@ Enter your choice:
             print()
         else:
             invalidMenuInput(opt)
+
+def putFilesUI():
+    # Get file path
+    prompt = "Enter the filepath of the file to upload: "
+    #inputBuf = takeinput.takeInput(prompt)
+    ret = (False, "", "", "")
+    path = ""
+    filename = ""
+    uploadPath = ""
+
+    inputBuf = takeinput.takeInput(prompt)
+
+    # Check for errors in input
+    if inputBuf[0] == True:
+        path = inputBuf[1]
+
+        # Get filename
+        prompt = "Please type in file name you wish to upload with extention: "
+        inputBuf = takeinput.takeInput(prompt)
+
+        # Check for errors in input
+        if inputBuf[0] == True:
+            filename = inputBuf[1]
+
+            # Get directory path
+            prompt = "Please enter the diretory path you want to upload the file to eg: /uploads : "
+            inputBuf = takeinput.takeInput(prompt)
+
+            # Check for errors in input
+            if inputBuf[0] == True:
+                uploadPath = inputBuf[1]
+
+                # return tuple
+                if inputBuf[0] == True:
+                    ret = (True, path, filename, uploadPath)
+                else:
+                    print(resp[1])
+            else:
+                print(inputBuf[1])
+        else:
+            print(inputBuf[1])
+    else:
+        print(inputBuf[1])
+
+    return ret
 
 
 # Main
