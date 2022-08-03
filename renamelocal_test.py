@@ -1,7 +1,7 @@
 import pytest
 from operator import contains
 import os
-import rename_local
+import renamelocal
 from os.path import exists
 
 def test_rename_local_file():    
@@ -12,7 +12,7 @@ def test_rename_local_file():
     fp.close
 
     #rename and delete if successful
-    assert(rename_local.renameLocal('./test.txt','./newTest.txt') == True)
+    assert(renamelocal.renameLocal('./test.txt','./newTest.txt') == True)
     if(exists('./newTest.txt')):
         os.remove('./newTest.txt')
     else:
