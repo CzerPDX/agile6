@@ -41,8 +41,14 @@ def list_files(ftp, include_directories):
             line_fields = line.split()
             if line_fields[0].startswith("-"):                      # If the file listing is a normal file add it's name to the list
                 return_file_list.append((line_fields[8], False))
+    
+    # Return a regular list without tuples to be printed out
+    retList = []
+    for item in return_file_list:
+        retList.append(item[0])
 
-    return return_file_list
+    #return return_file_list
+    return retList
 
 def get_multiple(ftp, file_list):
     success_flag = True
