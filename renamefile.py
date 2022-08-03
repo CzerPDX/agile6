@@ -8,7 +8,7 @@ def renameFile(ftp, fromName, toName):
 		capture = ftp.rename(fromName, toName)
 		ret = (True, (capture))
 
-		logging.info("Files Renamed")
+		logging.info(str(capture))
 
 	except Exception as err:
 		ret = (False, err)

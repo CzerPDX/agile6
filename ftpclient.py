@@ -287,24 +287,62 @@ Enter your choice:
 
         # 7.  Create directory on remote server
         elif opt[1] == "7":
-            prompt = "What is the name of the new directory you'd like to add?"
-            # Take input from user and log it
+            server_response = (False, "")
+            # Print the title
+            title = "Create directory on remote server"
+            printTitle(title)
+
+            # Get the directory name to add
+            prompt = "What is the name of the new directory you'd like to add? "
             inputBuf = takeinput.takeInput(prompt)
             
+            # If input is valid
             if inputBuf[0] == True:
                 server_response = createremotedir.createDir(ftp, inputBuf[1])
-            print(server_response)
+
+            print()
+            if server_response[0] == True:
+                print("directory " + server_response[1] + " successfully added.")
+            else:
+                print(server_response[1])
+            print()
             
         # 8. Delete file from remote server
         elif opt[1] == "8":
-            print("You chose " + opt[1])
-            fileName = takeinput.takeInput("Please enter file or directory to delete: ")
-            ftpResponse = deletefile.deleteFile(ftp, fileName[1])
-            print(ftpResponse)
+            server_response = (False, "")
+            # Print the title
+            title = "Delete file from remote server"
+            printTitle(title)
+
+            # Get local path
+            pathGood = False
+            try:
+                path = os.getcwd()
+                pathGood = True
+            except Exception as err:
+                print(str(err))
+
+            if pathGood:
+                # Print the list of files on the server
+                server_response = listlocaldir.listLocal(path)
+
+                if (server_response[0] == True):
+                    for item in server_response[1]:
+                        print(item)
+                    print()
+                else:
+                    print(server_response[1])
+
+                fileName = takeinput.takeInput("Please enter file or directory to delete: ")
+                ftpResponse = deletefile.deleteFile(ftp, fileName[1])
+                print(ftpResponse)
 
         # 9. Change permissions on remote server
         elif opt[1] == "9":
-            print("You chose " + opt[1])
+            # Print the title
+            title = "Change permissions on remote server"
+            printTitle(title)
+
             chmodKey = takeinput.takeInput("Please enter 3 digit chmod key: ")
             fileName = takeinput.takeInput("Please enter file or directory name to change permissions: ")
             ftpResponse = changepermissions.changePermissions(ftp, chmodKey[1], fileName[1])
@@ -312,12 +350,19 @@ Enter your choice:
 
         # 10. Copy directories on remote server
         elif opt[1] == "10":
-            print("You chose " + opt[1])
+            # Print the title
+            title = "Copy directories on remote server"
+            printTitle(title)
+
             copyremotedir.copyDir(ftp)
 
         # 11. Delete directories on remote server
         elif opt[1] == "11":
-            prompt = "What is the name of the directory you'd like to remove?"
+            # Print the title
+            title = "Delete directories on remote server"
+            printTitle(title)
+
+            prompt = "What is the name of the directory you'd like to remove? "
             # Take input from user and log it
             inputBuf = takeinput.takeInput(prompt)
             
@@ -327,12 +372,22 @@ Enter your choice:
 
         # 12. Rename file on remote server
         elif opt[1] == "12":
+            # Print the title
+            title = "Rename file on remote server"
+            printTitle(title)
+
             fileToRename = takeinput.takeInput('Which file do you want to rename?\n')
             newName = takeinput.takeInput('What would you like to rename it to?\n')
-            response = renamefile.renameFile(ftp, fileToRename[1], newName[1])
+            server_response = renamefile.renameFile(ftp, fileToRename[1], newName[1])
+
+            print(server_response[1])
 
         # 13. Log history
         elif opt[1] == "13":
+            # Print the title
+            title = "Display the log history"
+            printTitle(title)
+            
             log_string = logtostring.process_log_file("input-and-errors.log")
             if log_string is not None:
                 print("\n======== LOG HISTORY ========\n" + log_string + "=======================\n")
@@ -344,14 +399,60 @@ Enter your choice:
 
         # 14. Rename local file
         elif opt[1] == "14":
-            old = takeinput.takeInput("Please enter relative path to local file you want to rename: ")
-            new = takeinput.takeInput("Please enter the relative path of the new name of the file: ")
-            ftpResponse = renamelocal.renameLocal(old[1], new[1])
-            if(ftpResponse == True):
-                print("\nLocal file successfully renamed")
-            else:
-                print("\nError renaming file")
+            server_response = (False, "")
+            old = ""
+            new = ""
 
+            # Print the title
+            title = "Rename local file"
+            printTitle(title)
+
+            # Get local path
+            pathGood = False
+            try:
+                path = os.getcwd()
+                relpath = os.path.relpath(path, start = os.curdir)
+                pathGood = True
+            except Exception as err:
+                print(str(err))
+
+            
+            if pathGood:
+                # Print the list of files on the server
+                server_response = listlocaldir.listLocal(path)
+
+            if (server_response[0] == True):
+                for item in server_response[1]:
+                    print(relpath + "/" + item)
+                print()
+
+                # Get old path/file name
+                prompt = "Please enter relative path to local file you want to rename: "
+                inputBuf = takeinput.takeInput(prompt)
+                if inputBuf[0] == True:
+                    old = inputBuf[1]
+                else:
+                    print(inputBuf[1])
+
+                # Get new path/file name
+                if inputBuf[0] == True:
+                    prompt = "Please enter the relative path of the new name of the file: "
+                    inputBuf = takeinput.takeInput(prompt)
+                    if inputBuf[0] == True:
+                        new = inputBuf[1]
+                    else:
+                        print(inputBuf[1])
+                
+                # Feed old and new file names into renamelocal
+                if inputBuf[0] == True:
+                    server_response = renamelocal.renameLocal(old, new)
+
+                    # Print out the result
+                    print()
+                    print(server_response[1])        
+                    print()        
+            else:
+                print(server_response[1])
 
         #Q.  Log off
         elif opt[1].lower() == "q":
