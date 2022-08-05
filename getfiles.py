@@ -4,6 +4,7 @@ import sys
 import logging
 from io import StringIO
 from datetime import datetime
+import os
 
 def get_single(ftp, filename, is_directory):
 
@@ -22,7 +23,23 @@ def get_single(ftp, filename, is_directory):
     return False
 
 def get_directory(ftp, directory_name):
-    pass
+    localPath = os.getcwd()                     #Get local path
+    remotePath = ftp.pwd()                      #Get remote path
+
+    ftp.cwd(remotePath + directory_name)        #Change into directory to be copied
+
+    newlocalPath = os.path.join(localPath, directory_name)
+    
+    os.mkdir(newlocalPath)                      #Make new directory in new path
+    os.chdir(newlocalPath)                      #Change into the new directory
+
+    files = ftp.nlst()                          #Get names of files in directory
+
+    for file in files:
+        if file[0:] != "." and file[0:] != "..":        #Ignores current folder and parent folder
+            ftp.retrbinary("RETR "+file, open(file[0:], 'wb').write) 
+
+    
 
 def list_files(ftp, include_directories):
 
@@ -41,14 +58,8 @@ def list_files(ftp, include_directories):
             line_fields = line.split()
             if line_fields[0].startswith("-"):                      # If the file listing is a normal file add it's name to the list
                 return_file_list.append((line_fields[8], False))
-    
-    # Return a regular list without tuples to be printed out
-    retList = []
-    for item in return_file_list:
-        retList.append(item[0])
 
-    #return return_file_list
-    return retList
+    return return_file_list
 
 def get_multiple(ftp, file_list):
     success_flag = True
