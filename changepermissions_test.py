@@ -11,7 +11,7 @@ import deletefile
 ## connected and in a valid directory ## 
 def test_change_permissions(monkeypatch):
 
-    fp = open('fileToBeDeleted.txt', 'x')
+    fp = open('fileToBeDeleted.txt', 'w')
     fp.write("This is a test file, you should not be seeing this if the test does what it's suppose to")
     fp.close
 
