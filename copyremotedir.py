@@ -8,6 +8,7 @@ def copyDir(ftp, toCopy):
     remotePath = ftp.pwd()
 
 
+
     getfiles.get_directory(ftp, toCopy)          #Download Copy
 
 
@@ -21,13 +22,11 @@ def copyDir(ftp, toCopy):
     files = os.listdir()
 
     for file in files:
-        ftp.storbinary('STOR ' + file, open(file[0:], 'rb'))
+        ftp.storbinary('STOR ' + file, open(file[0:], 'rb'))   #Upload Copy
 
     for file in files:
-        toRemove = os.path.join(newlocalPath, file)
+        toRemove = os.path.join(newlocalPath, file)     #Delete temp copy files
         os.remove(toRemove)
-    os.rmdir(newlocalPath)
-
-
-
+        
+    os.rmdir(newlocalPath)                              #Delete temp copy directory
 
