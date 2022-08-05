@@ -357,6 +357,7 @@ Enter your choice:
             toCopy = input("Enter the directory name to copy: ")
             copyremotedir.copyDir(ftp, toCopy)
 
+
         # 11. Delete directories on remote server
         elif opt[1] == "11":
             # Print the title
