@@ -299,13 +299,12 @@ Enter your choice:
             # If input is valid
             if inputBuf[0] == True:
                 server_response = createremotedir.createDir(ftp, inputBuf[1])
-
             print()
-            if server_response[0] == True:
-                print("directory " + server_response[1] + " successfully added.")
-            else:
-                print(server_response[1])
-            print()
+                if server_response[0] == True:
+                    print("directory " + server_response[1] + " successfully added.")
+                else:
+                    print(server_response[1])
+                print()
             
         # 8. Delete file from remote server
         elif opt[1] == "8":
@@ -354,6 +353,7 @@ Enter your choice:
             # Print the title
             title = "Copy directories on remote server"
             printTitle(title)
+
             toCopy = input("Enter the directory name to copy: ")
             copyremotedir.copyDir(ftp, toCopy)
 

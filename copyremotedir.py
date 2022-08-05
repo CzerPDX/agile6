@@ -14,13 +14,9 @@ def copyDir(ftp, toCopy):
         ret = (False, err)
         logging.error(err)
 
-<<<<<<< HEAD
+
         now = datetime.now()
         logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: " + str(err))
-=======
-
-    getfiles.get_directory(ftp, toCopy)          #Download Copy
->>>>>>> d23f7b617d5d4ec64420bd16e366fe8f32c8e474
 
     if(ret[0]):
 
@@ -105,14 +101,8 @@ def copyDir(ftp, toCopy):
         toRemove = os.path.join(newlocalPath, file)     #Delete temp copy files
         os.remove(toRemove)
             
-    os.rmdir(newlocalPath)
     os.rmdir(newlocalPath)                              #Delete temp copy directory
 
 
 
-        
-
-
-
-
-
+ 

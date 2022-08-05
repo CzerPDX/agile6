@@ -24,9 +24,6 @@ def test_listRemote_valid_input(monkeypatch):
     # Set up a directory in a valid location
     testDir = "testDir"       # name of the test directory
 
-    # Check if the directory exists already on the ftp server
-    
-
     #   Delete the test directory if it already exists
     removeremotedir.removeDir(ftp, testDir)
     
