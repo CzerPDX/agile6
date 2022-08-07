@@ -335,7 +335,10 @@ Enter your choice:
 
                 fileName = takeinput.takeInput("Please enter file or directory to delete: ")
                 ftpResponse = deletefile.deleteFile(ftp, fileName[1])
+                
+                print()
                 print(ftpResponse)
+                print()
 
         # 9. Change permissions on remote server
         elif opt[1] == "9":
@@ -346,7 +349,10 @@ Enter your choice:
             chmodKey = takeinput.takeInput("Please enter 3 digit chmod key: ")
             fileName = takeinput.takeInput("Please enter file or directory name to change permissions: ")
             ftpResponse = changepermissions.changePermissions(ftp, chmodKey[1], fileName[1])
+            
+            print()
             print(ftpResponse)
+            print()
 
 
         # 10. Copy directories on remote server
@@ -356,7 +362,10 @@ Enter your choice:
             printTitle(title)
 
             toCopy = input("Enter the directory name to copy: ")
-            copyremotedir.copyDir(ftp, toCopy)
+            server_response = copyremotedir.copyDir(ftp, toCopy)
+            print()
+            print(server_response[1])
+            print()
 
         # 11. Delete directories on remote server
         elif opt[1] == "11":
