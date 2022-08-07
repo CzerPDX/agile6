@@ -11,10 +11,8 @@ def copyDir(ftp, toCopy):
         ret = (True, "")
     
     except Exception as err:
-        ret = (False, err)
+        ret = (False, str(err))
         logging.error(err)
-
-
         now = datetime.now()
         logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: " + str(err))
 
@@ -25,7 +23,7 @@ def copyDir(ftp, toCopy):
             ret = (True, "")
     
         except Exception as err:
-            ret = (False, err)
+            ret = (False, str(err))
             logging.error(err)
 
             now = datetime.now()
@@ -38,7 +36,7 @@ def copyDir(ftp, toCopy):
             ret = (True, "")
     
         except Exception as err:
-            ret = (False, err)
+            ret = (False, str(err))
             logging.error(err)
 
             now = datetime.now()
@@ -51,7 +49,7 @@ def copyDir(ftp, toCopy):
             ret = (True, "")
     
         except Exception as err:
-            ret = (False, err)
+            ret = (False, str(err))
             logging.error(err)
 
             now = datetime.now()
@@ -136,6 +134,16 @@ def copyDir(ftp, toCopy):
             now = datetime.now()
             logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: " + str(err))
 
+    if (ret[0]):
+        try:
+            ftp.cwd("..")
+
+        except Exception as err:
+            ret = (False, str(err))
+            logging.error(err)
+
+            now = datetime.now()
+            logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: " + str(err))
 
     if (ret[0]):
         try:  

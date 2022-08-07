@@ -12,10 +12,11 @@ def changePermissions(ftp, chmodKey, fileName):
         #os.stat(fileName)
         now = datetime.now()
         logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: CHANGE PERMISSIONS ON FTP SERVER FILE: Server response: " + ftpResponse)
-        return ftpResponse
+        ret = (True, str(ftpResponse))
     except Exception as err:
         now = datetime.now()
+        ret = (False, str(err))
         logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: CHANGE PERMISSIONS ON FTP SERVER FILE: " + str(err))
 
-
+    return ret
 

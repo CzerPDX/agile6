@@ -269,6 +269,7 @@ Enter your choice:
                 print()
 
                 # Ask for "yes" or "no" input until valid response is given
+                ans = ""
                 while (ans != "no") and (ans != "yes"):
                     prompt = "Do you wish to upload another file? yes/no: "
                     inputBuf = takeinput.takeInput(prompt)
@@ -282,8 +283,8 @@ Enter your choice:
                         else:
                             errMsg = ans[1] + " is not a valid entry. Please enter 'yes' or 'no'"
                             logging.error(errMsg)
-                    else:
-                        print(inputBuf[1])
+                    # else:
+                    #     print(inputBuf[1])
 
         # 7.  Create directory on remote server
         elif opt[1] == "7":
@@ -324,7 +325,7 @@ Enter your choice:
 
             if pathGood:
                 # Print the list of files on the server
-                server_response = listlocaldir.listLocal(path)
+                server_response = listremotedir.listRemote(ftp)
 
                 if (server_response[0] == True):
                     for item in server_response[1]:
@@ -337,7 +338,7 @@ Enter your choice:
                 ftpResponse = deletefile.deleteFile(ftp, fileName[1])
                 
                 print()
-                print(ftpResponse)
+                print(ftpResponse[1])
                 print()
 
         # 9. Change permissions on remote server
@@ -345,13 +346,13 @@ Enter your choice:
             # Print the title
             title = "Change permissions on remote server"
             printTitle(title)
-
-            chmodKey = takeinput.takeInput("Please enter 3 digit chmod key: ")
+            
             fileName = takeinput.takeInput("Please enter file or directory name to change permissions: ")
+            chmodKey = takeinput.takeInput("Please enter 3 digit chmod key: ")
             ftpResponse = changepermissions.changePermissions(ftp, chmodKey[1], fileName[1])
             
             print()
-            print(ftpResponse)
+            print(ftpResponse[1])
             print()
 
 
