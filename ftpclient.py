@@ -299,7 +299,7 @@ Enter your choice:
             # If input is valid
             if inputBuf[0] == True:
                 server_response = createremotedir.createDir(ftp, inputBuf[1])
-                print()
+            print()
                 if server_response[0] == True:
                     print("directory " + server_response[1] + " successfully added.")
                 else:
