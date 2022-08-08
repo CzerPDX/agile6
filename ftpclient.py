@@ -389,6 +389,16 @@ Enter your choice:
             # Print the title
             title = "Change permissions on remote server"
             printTitle(title)
+
+            # Print the list of files on the server
+            server_response = listremotedir.listRemote(ftp)
+
+            if (server_response[0] == True):
+                for item in server_response[1]:
+                    print(item)
+                print()
+            else:
+                print(server_response[1])
             
             fileName = takeinput.takeInput("Please enter file or directory name to change permissions: ")
             chmodKey = takeinput.takeInput("Please enter 3 digit chmod key: ")
@@ -434,6 +444,16 @@ Enter your choice:
             # Print the title
             title = "Rename file on remote server"
             printTitle(title)
+
+            # Print the list of files on the server
+            server_response = listremotedir.listRemote(ftp)
+
+            if (server_response[0] == True):
+                for item in server_response[1]:
+                    print(item)
+                print()
+            else:
+                print(server_response[1])
 
             fileToRename = takeinput.takeInput('Which file do you want to rename?\n')
             newName = takeinput.takeInput('What would you like to rename it to?\n')
