@@ -12,7 +12,7 @@ import putfile
 
 ## connected and in a valid directory ## 
 def test_delete_file(monkeypatch):
-    fp = open('fileToBeDeleted.txt', 'x')
+    fp = open('fileToBeDeleted.txt', 'w')
     fp.write("This is a test file, you should not be seeing this if the test does what it's suppose to")
     fp.close
 
