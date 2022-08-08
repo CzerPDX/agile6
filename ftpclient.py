@@ -422,8 +422,11 @@ Enter your choice:
             inputBuf = takeinput.takeInput(prompt)
             
             if inputBuf[0] == True:
-                removeremotedir.removeDir(ftp, inputBuf[1])
-            print(inputBuf)
+                server_response = removeremotedir.removeDir(ftp, inputBuf[1])
+                
+            print()
+            print(server_response[1])
+            print()
 
         # 12. Rename file on remote server
 

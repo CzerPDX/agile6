@@ -5,7 +5,7 @@ from datetime import datetime
 def deleteFile(ftp, fileName):
 
     try:
-        ftpResponse = ftp.delete(fileName);
+        ftpResponse = ftp.delete(fileName)
         now = datetime.now()
         logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: DELETE FILE ON FTP SERVER: " + ftpResponse)
         ret = (True, str(ftpResponse))
