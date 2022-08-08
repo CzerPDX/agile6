@@ -127,9 +127,14 @@ Enter your choice:
             printTitle(title)
 
             # Get the files at the location
-            list = listremotedir.listRemote(ftp)
+            server_response = listremotedir.listRemote(ftp)
 
-            printNumberedList(list[1])
+            if server_response[0]:
+                list = server_response[1]
+                # Print a numbered list of files
+                printNumberedList(list)
+            else:
+                print(server_response[1])
 
         # 2.  Download file from remote server
         elif opt[1] == "2":
@@ -137,30 +142,44 @@ Enter your choice:
             title = "Download file from remote server"
             printTitle(title)
 
-            # Show the files available for the user to download
-            print("Files available to download:")
-            list = getfiles.list_files(ftp, False)
-            printNumberedList(list)
+            # Get the list of files available for the user to download
+            server_response = getfiles.list_files(ftp, False)
+            if (server_response[0]):
+                list = server_response[1]
+            else:
+                print(server_response[1])
 
+            if (server_response[0]):
+                # Print out a numbered list of files
+                print("Files available to download:")
+                printNumberedList(list)
+                print()
 
-            user_input = ""
-            while user_input != "/":
-                print("Please enter the number of the file to download or the slash character / to abort:", end =" ")
-                user_input = input()
-                if user_input == "/":
-                    break
-                try:
-                    val = int(user_input)
-                    if val < 1 or len(list) < val:
-                        print("Number given is out of range.")
-                        continue
-                    print("File selected: " + list[val - 1][0] + "\n")
-                    if getfiles.get_single(ftp, list[val - 1][0] , list[val - 1][1]):
-                        now = datetime.now()
-                        logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: RETRIEVE FILE FROM FTP SERVER: File retrieved successfully.")
-                    break
-                except ValueError:
-                    print("Input was not a valid number.")
+                # Get the user's entry for file number
+                prompt = "Please enter the number of the file to download or the slash character / to abort: "
+                inputBuf = takeinput.takeInput(prompt)
+
+                # Check input assuming a valid (non-empty) response was given
+                if inputBuf[0] == True:
+                    user_input = inputBuf[1]
+                    if user_input != "/":
+                        try:
+                            val = int(user_input)
+                            if val < 1 or len(list) < val:
+                                print("Number given is out of range.")
+                            else:
+                                print("File selected: " + list[val - 1] + "\n")
+                                server_response = getfiles.get_single(ftp, list[val - 1])
+                                
+                                # Print out the response from the server
+                                print(server_response[1])
+                                print()
+
+                        except ValueError:
+                            print("Input was not a valid number.\n")
+                else:
+                    print(inputBuf[1])
+                    print()
 
         # 3.  Get multiple
         elif opt[1] == "3":
@@ -168,42 +187,65 @@ Enter your choice:
             title = "Download multiple files from the remote server"
             printTitle(title)
             
-            # List the files available for the user to download
-            print("Files available to download:")
-            list = getfiles.list_files(ftp, False)
-            printNumberedList(list)
+            # Get the list of files available for the user to download
+            server_response = getfiles.list_files(ftp, False)
+            if (server_response[0]):
+                list = server_response[1]
+            else:
+                print(server_response[1])
+
+            if (server_response[0]):
+                # Print out a numbered list of files
+                print("Files available to download:")
+                printNumberedList(list)
+                print()
 
 
-            user_input = ""
-            files_to_get = []
-            bad_input_flag = False
-            while user_input != "/":
-                print("Please enter the number of each file to download separated by a space, or enter the slash character / to abort:")
-                user_input = input()
-                if user_input == "/":
-                    break
-                try:
-                    # Validate that each file chosen exists in the list
-                    for num in user_input.split(" "):
-                        val = int(num)
-                        if val < 1 or len(list) < val:
-                            bad_input_flag = True
-                            print("At least one number given is out of range.")
-                            break
-                        files_to_get.append(list[val - 1])
-                    if bad_input_flag:
-                        bad_input_flag = False
-                        continue
-                    print("Files selected for download: ", end='')
-                    for file in files_to_get:
-                        print(file[0] + " ", end='')
-                    print("\n")
-                    if getfiles.get_multiple(ftp, files_to_get):
-                        now = datetime.now()
-                        logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: RETRIEVE MULTIPLE FILES FROM FTP SERVER: Files retrieved successfully.")
-                    break
-                except ValueError:
-                    print("Input was not a valid number.")
+                user_input = ""
+                files_to_get = []
+                bad_input_flag = False
+
+                while user_input != "/":
+                    prompt = "Please enter the number of each file to download separated by a space, or enter the slash character / to abort: "
+                    inputBuf = takeinput.takeInput(prompt)
+
+                    if inputBuf[0]:
+                        user_input = inputBuf[1]
+                    else:
+                        print(inputBuf[1])
+                    
+                    if inputBuf[0]:
+                        if user_input != "/":
+                            # Verify that all user input is valid
+                            try:
+                                for num in user_input.split(" "):
+                                    # Check that it can successfully be turned into an int
+                                    val = int(num)
+                                    # Validate that each file chosen exists in the list (valid index)
+                                    if val < 1 or len(list) < val:
+                                        raise Exception("Error! Value " + str(val) + " is out of range.")
+                                        bad_input_flag == True
+                                    # Add to the list of files_to_get, if it's in range.
+                                    else:
+                                        files_to_get.append(list[val - 1])
+                            except Exception as err:
+                                now = datetime.now()
+                                errMsg = now.strftime("%m/%d/%Y %H:%M:%S ERROR: ") + str(err)
+                                logging.error(errMsg)
+                                bad_input_flag = True
+
+                                print(errMsg)
+                                print()
+
+                            # Validate that each file chosen exists in the list
+                            if (bad_input_flag == False):
+                                print("Files selected for download: ", end='')
+                                for file in files_to_get:
+                                    print(file + " ", end='')
+                                print("\n")
+                                if getfiles.get_multiple(ftp, files_to_get):
+                                    now = datetime.now()
+                                    logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: RETRIEVE MULTIPLE FILES FROM FTP SERVER: Files retrieved successfully.")
 
 
         # 4.  List directories & files on local machine
@@ -276,15 +318,14 @@ Enter your choice:
 
                     if inputBuf[0] == True:
                         ans = inputBuf[1]
-                        if(ans == 'no'):
+                        if(ans.lower() == "no"):
                             add_more = False
-                        if(ans == 'yes'):
+                        elif(ans.lower() == "yes"):
                             add_more = True
                         else:
-                            errMsg = ans[1] + " is not a valid entry. Please enter 'yes' or 'no'"
+                            errMsg = ans + " is not a valid entry. Please enter 'yes' or 'no'"
                             logging.error(errMsg)
-                    # else:
-                    #     print(inputBuf[1])
+                            print(errMsg)
 
         # 7.  Create directory on remote server
         elif opt[1] == "7":
@@ -307,6 +348,8 @@ Enter your choice:
                 else:
                     print(server_response[1])
                 print()
+            else:
+                print(inputBuf[1])
             
         # 8. Delete file from remote server
         elif opt[1] == "8":

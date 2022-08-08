@@ -6,21 +6,20 @@ from io import StringIO
 from datetime import datetime
 import os
 
-def get_single(ftp, filename, is_directory):
+def get_single(ftp, filename):
+    ret = (False, "")
+    try:
+        file_to_get = "RETR " + filename
+        # wb - indicates binary write mode
+        server_response = ftp.retrbinary(file_to_get, open(filename, 'wb').write)       # author/source: https://pythontic.com/ftplib/ftp/retrbinary
+        ret = (True, str(server_response))
+    except Exception as err:
+        now = datetime.now()
+        errMsg = now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: RETRIEVE FILE FROM FTP SERVER: " + filename + ": Server response was: " + str(err)
+        logging.error(errMsg)
+        ret = (False, errMsg)
 
-    if is_directory:
-        get_directory(ftp, filename)
-    else:
-        try:
-            file_to_get = "RETR " + filename
-            ftp.retrbinary(file_to_get, open(filename, 'wb').write)       # author/source: https://pythontic.com/ftplib/ftp/retrbinary
-            return True
-        except Exception as err:                                                 # wb - indicates binary write mode
-            now = datetime.now()
-            logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: RETRIEVE FILE FROM FTP SERVER: " + filename + ": Server response was: " + str(err))
-            return False
-
-    return False
+    return ret
 
 def get_directory(ftp, directory_name):
     localPath = os.getcwd()                     #Get local path
@@ -49,6 +48,8 @@ def list_files(ftp, include_directories):
     string_file.seek(0)
     file_list = string_file.read()              # Read the contents of the string file into the string file_list
     sys.stdout = orig_stdout                    # Reset standard output to the original identifier
+    final_ret_list = []                         # Final return list of files
+    ret = (False, final_ret_list)
 
     return_file_list = []
     if include_directories:
@@ -58,13 +59,43 @@ def list_files(ftp, include_directories):
             line_fields = line.split()
             if line_fields[0].startswith("-"):                      # If the file listing is a normal file add it's name to the list
                 return_file_list.append((line_fields[8], False))
+    
+    # Collect the valid list entries into final_ret_list
+    for entry in return_file_list:
+        final_ret_list.append(entry[0])
+    ret = (True, final_ret_list)
 
-    return return_file_list
+    return ret
 
 def get_multiple(ftp, file_list):
-    success_flag = True
-    for file in file_list:
-        if get_single(ftp, file[0], file[1]) is False:
-            success_flag = False
-    return success_flag
+    ret = (True, "")
+    fileCnt = len(file_list)
+    i = 0
+    
+    # Get each of the files
+    while ((i < fileCnt) and (ret[0])):
+        ret = get_single(ftp, file_list[i])
+        i = i + 1
+
+
+    # If unsuccessful, error should already be logged in get_single
+    # If successful, create a good error message:
+    if (ret[0]):
+        successMsg = "Successfully downloaded: "
+        for file in file_list:
+            successMsg += " "
+            successMsg += file
+        ret = (True, successMsg)
+
+        now = datetime.now()
+        infoMsg = now.strftime("%m/%d/%Y %H:%M:%S ") + successMsg
+    else:
+        errMsg = "ERROR: get_single failed on filename: \"" + file_list[i -1] + "\""
+        ret = (False, errMsg)
+
+        now = datetime.now()
+        errMsg = now.strftime("%m/%d/%Y %H:%M:%S") + errMsg
+        logging.error(errMsg)
+
+    return ret
     
