@@ -21,10 +21,9 @@ def removeDir(ftp, toRemove):
         logging.info(logMsg)
 
     except Exception as err:
-        ret = (False, err)
-        logging.error(err)
+        ret = (False, str(err))
         now = datetime.now()
-        logging.info(now.strftime("%m/%d/%Y %H:%M:%S ERROR: ") + str(err))
+        logging.error(now.strftime("%m/%d/%Y %H:%M:%S ERROR: ") + str(err))
 
     return ret
 
@@ -57,5 +56,3 @@ def removeFilesRec(ftp):
                 ret = (True, "")
             except Exception as err:
                 server_response = deletefile.deleteFile(ftp, item)
-                ret = (False, str(err))
-

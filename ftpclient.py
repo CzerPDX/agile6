@@ -4,6 +4,7 @@ import sys
 import os
 from ftplib import FTP
 from datetime import datetime
+from colorama import Fore, Back, Style
 
 ########################################
 # Add includes here for your files
@@ -37,8 +38,19 @@ import logtostring              # Functions for reading the input-and-errors log
 # FTPlib documentation: https://docs.python.org/3/library/ftplib.html
 # Logging documentation: https://docs.python.org/3/library/logging.html
 #                        https://docs.python.org/3/howto/logging.html
+# Printing colored text: https://stackabuse.com/how-to-print-colored-text-in-python/ 
 # how to make strings span multiple lines: https://www.tutorialspoint.com/triple-quotes-in-python
 # checking types within a tuples
+
+def printSuccess(resp):
+    print()
+    print(Fore.BLACK + Back.GREEN + resp + Style.RESET_ALL)
+    print()
+
+def printFailure(resp):
+    print()
+    print(Fore.BLACK + Back.RED + resp + Style.RESET_ALL)
+    print()
 
 def printTitle(title):
     print()
@@ -67,7 +79,7 @@ def invalidMenuInput(opt):
     # otherwise, user input was not one of the given options
     else:
         errorMsg = "Error! " + opt[1] + " is not a valid entry. Please try again..."
-        print(errorMsg)
+        printFailure(errorMsg)
         now = datetime.now()
         logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: MENU SELECTION: " + errorMsg)
 
@@ -92,7 +104,7 @@ def postLoginMenu(ftp, welcomeMessage):
 6.  Put multiple
 7.  Create directory on remote server
 8.  Delete file from remote server
-9. Change permissions on remote server
+9.  Change permissions on remote server
 10. Copy directories on remote server
 11. Delete directories on remote server
 12. Rename file on remote server
@@ -166,20 +178,21 @@ Enter your choice:
                         try:
                             val = int(user_input)
                             if val < 1 or len(list) < val:
-                                print("Number given is out of range.")
+                                printFailure("Number given is out of range.")
                             else:
                                 print("File selected: " + list[val - 1] + "\n")
                                 server_response = getfiles.get_single(ftp, list[val - 1])
                                 
                                 # Print out the response from the server
-                                print(server_response[1])
-                                print()
+                                if server_response[0]:
+                                    printSuccess(server_response[1])
+                                else:
+                                    printFailure(server_response[1])
 
                         except ValueError:
-                            print("Input was not a valid number.\n")
+                            printFailure("Input was not a valid number.\n")
                 else:
-                    print(inputBuf[1])
-                    print()
+                    printFailure(inputBuf[1])
 
         # 3.  Get multiple
         elif opt[1] == "3":
@@ -192,7 +205,7 @@ Enter your choice:
             if (server_response[0]):
                 list = server_response[1]
             else:
-                print(server_response[1])
+                printFailure(server_response[1])
 
             if (server_response[0]):
                 # Print out a numbered list of files
@@ -212,7 +225,7 @@ Enter your choice:
                     if inputBuf[0]:
                         user_input = inputBuf[1]
                     else:
-                        print(inputBuf[1])
+                        printFailure(inputBuf[1])
                     
                     if inputBuf[0]:
                         if user_input != "/":
@@ -234,8 +247,7 @@ Enter your choice:
                                 logging.error(errMsg)
                                 bad_input_flag = True
 
-                                print(errMsg)
-                                print()
+                                printFailure(errMsg)
 
                             # Validate that each file chosen exists in the list
                             if (bad_input_flag == False):
@@ -243,10 +255,15 @@ Enter your choice:
                                 for file in files_to_get:
                                     print(file + " ", end='')
                                 print("\n")
-                                if getfiles.get_multiple(ftp, files_to_get):
+                                server_response = getfiles.get_multiple(ftp, files_to_get)
+                                    
+                                # Print out the response from the server
+                                if server_response[0]:
+                                    printSuccess(server_response[1])
+                                else:
+                                    printFailure(server_response[1])
                                     now = datetime.now()
-                                    logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: RETRIEVE MULTIPLE FILES FROM FTP SERVER: Files retrieved successfully.")
-
+                                    logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: RETRIEVE MULTIPLE FILES FROM FTP SERVER: FAILED.\nResponse: " + server_response[1])
 
         # 4.  List directories & files on local machine
         elif opt[1] == "4":
@@ -260,7 +277,7 @@ Enter your choice:
                 path = os.getcwd()
                 pathGood = True
             except Exception as err:
-                print(str(err))
+                printFailure(str(err))
 
             if pathGood:
                 server_response = listlocaldir.listLocal(path)
@@ -268,7 +285,7 @@ Enter your choice:
                 if server_response[0] == True:
                     printNumberedList(server_response[1])
                 else:
-                    print(server_response[1])
+                    printFailure(server_response[1])
         
         # 5.  Put file onto remote server
         elif opt[1] == "5":
@@ -285,9 +302,10 @@ Enter your choice:
                 server_response = putfile.put_file(ftp, fileInfo[1], fileInfo[2], fileInfo[3])
             
             # Display outcome
-            print()
-            print(server_response[1])
-            print()
+            if server_response[0]:
+                printSuccess(server_response[1])
+            else:
+                printFailure(server_response[1])
             
         # 6. Put multiple files onto the remote server
         elif opt[1] == "6":
@@ -306,9 +324,10 @@ Enter your choice:
                 if fileInfo[0] == True:
                     server_response = putfile.put_file(ftp, fileInfo[1], fileInfo[2], fileInfo[3])
 
-                print()
-                print(server_response[1])
-                print()
+                if server_response[0]:
+                    printSuccess(server_response[1])
+                else:
+                    printFailure(server_response[1])
 
                 # Ask for "yes" or "no" input until valid response is given
                 ans = ""
@@ -325,7 +344,7 @@ Enter your choice:
                         else:
                             errMsg = ans + " is not a valid entry. Please enter 'yes' or 'no'"
                             logging.error(errMsg)
-                            print(errMsg)
+                            printFailure(errMsg)
 
         # 7.  Create directory on remote server
         elif opt[1] == "7":
@@ -344,12 +363,11 @@ Enter your choice:
                 print()
                 
                 if server_response[0] == True:
-                    print("directory " + server_response[1] + " successfully added.")
+                    printSuccess("directory " + server_response[1] + " successfully added.")
                 else:
-                    print(server_response[1])
-                print()
+                    printFailures(server_response[1])
             else:
-                print(inputBuf[1])
+                printFailure(inputBuf[1])
             
         # 8. Delete file from remote server
         elif opt[1] == "8":
@@ -364,7 +382,7 @@ Enter your choice:
                 path = os.getcwd()
                 pathGood = True
             except Exception as err:
-                print(str(err))
+                printFailure(str(err))
 
             if pathGood:
                 # Print the list of files on the server
@@ -375,14 +393,15 @@ Enter your choice:
                         print(item)
                     print()
                 else:
-                    print(server_response[1])
+                    printFailure(server_response[1])
 
                 fileName = takeinput.takeInput("Please enter file or directory to delete: ")
-                ftpResponse = deletefile.deleteFile(ftp, fileName[1])
+                server_response = deletefile.deleteFile(ftp, fileName[1])
                 
-                print()
-                print(ftpResponse[1])
-                print()
+                if server_response[0]:
+                    printSuccess(server_response[1])
+                else:
+                    printFailure(server_response[1])
 
         # 9. Change permissions on remote server
         elif opt[1] == "9":
@@ -398,15 +417,16 @@ Enter your choice:
                     print(item)
                 print()
             else:
-                print(server_response[1])
+                printFailure(server_response[1])
             
             fileName = takeinput.takeInput("Please enter file or directory name to change permissions: ")
             chmodKey = takeinput.takeInput("Please enter 3 digit chmod key: ")
-            ftpResponse = changepermissions.changePermissions(ftp, chmodKey[1], fileName[1])
+            server_response = changepermissions.changePermissions(ftp, chmodKey[1], fileName[1])
             
-            print()
-            print(ftpResponse[1])
-            print()
+            if server_response[0]:
+                printSuccess(server_response[1])
+            else:
+                printFailure(server_response[1])
 
 
         # 10. Copy directories on remote server
@@ -417,9 +437,11 @@ Enter your choice:
 
             toCopy = input("Enter the directory name to copy: ")
             server_response = copyremotedir.copyDir(ftp, toCopy)
-            print()
-            print(server_response[1])
-            print()
+
+            if server_response[0]:
+                printSuccess(server_response[1])
+            else:
+                printFailure(server_response[1])
 
         # 11. Delete directories on remote server
         elif opt[1] == "11":
@@ -434,12 +456,12 @@ Enter your choice:
             if inputBuf[0] == True:
                 server_response = removeremotedir.removeDir(ftp, inputBuf[1])
                 
-            print()
-            print(server_response[1])
-            print()
+            if server_response[0]:
+                printSuccess(server_response[1])
+            else:
+                printFailure(server_response[1])
 
         # 12. Rename file on remote server
-
         elif opt[1] == "12":
             # Print the title
             title = "Rename file on remote server"
@@ -453,13 +475,16 @@ Enter your choice:
                     print(item)
                 print()
             else:
-                print(server_response[1])
+                printFailure(server_response[1])
 
             fileToRename = takeinput.takeInput('Which file do you want to rename?\n')
             newName = takeinput.takeInput('What would you like to rename it to?\n')
             server_response = renamefile.renameFile(ftp, fileToRename[1], newName[1])
 
-            print(server_response[1])
+            if server_response[0]:
+                printSuccess(server_response[1])
+            else:
+                printFailure(server_response[1])
 
         # 13. Log history
         elif opt[1] == "13":
@@ -490,20 +515,17 @@ Enter your choice:
             pathGood = False
             try:
                 path = os.getcwd()
-                relpath = os.path.relpath(path, start = os.curdir)
                 pathGood = True
             except Exception as err:
-                print(str(err))
+                printFailure(str(err))
 
-            
             if pathGood:
-                # Print the list of files on the server
                 server_response = listlocaldir.listLocal(path)
 
-            if (server_response[0] == True):
-                for item in server_response[1]:
-                    print(relpath + "/" + item)
-                print()
+                if server_response[0] == True:
+                    printNumberedList(server_response[1])
+                else:
+                    printFailure(server_response[1])
 
                 # Get old path/file name
                 prompt = "Please enter relative path to local file you want to rename: "
@@ -511,7 +533,7 @@ Enter your choice:
                 if inputBuf[0] == True:
                     old = inputBuf[1]
                 else:
-                    print(inputBuf[1])
+                    printFailure(inputBuf[1])
 
                 # Get new path/file name
                 if inputBuf[0] == True:
@@ -520,18 +542,19 @@ Enter your choice:
                     if inputBuf[0] == True:
                         new = inputBuf[1]
                     else:
-                        print(inputBuf[1])
+                        printFailure(inputBuf[1])
                 
                 # Feed old and new file names into renamelocal
                 if inputBuf[0] == True:
                     server_response = renamelocal.renameLocal(old, new)
 
                     # Print out the result
-                    print()
-                    print(server_response[1])        
-                    print()        
+                    if server_response[0]:
+                        printSuccess(server_response[1])
+                    else:
+                        printFailure(server_response[1]) 
             else:
-                print(server_response[1])
+                printFailure(server_response[1])
 
         #Q.  Log off
         elif opt[1].lower() == "q":
@@ -597,12 +620,10 @@ Enter your choice:
                 break
             # If login was unsuccessful, display error message
             else:
-                print("Error! Failed to log into server")
-                print("Response: " + str(serverResponse[1])) 
-                print()
+                printFailure("Error! Failed to log into server.\nResponse: " + str(serverResponse[1]))
+                printFailure()
         elif (opt[1].lower() == "q"):
-            print("Disconnecting...")
-            print()
+            printSuccess("Disconnecting...")
         else:
             invalidMenuInput(opt)
 
@@ -761,9 +782,9 @@ Enter your choice:
                 resp = saveconnection.saveConnection(label, ftpAddr, username)
                 now = datetime.now()
                 logging.info(now.strftime("%m/%d/%Y %H:%M:%S") + " COMMAND: ADD NEW CONNECTION: " + resp[1])
-                print(resp[1])
+                printSuccess(resp[1])
             except Exception as err:
-                print(err)
+                printFailure(err)
                 now = datetime.now()
                 logging.error(now.strftime("%m/%d/%Y %H:%M:%S") + " ERROR: ADD NEW CONNECTION: " + str(err))
         # Use saved connection information to connect
@@ -815,22 +836,18 @@ Enter your choice:
                         # the server with a ftp.quit()
                         logout_resp = logoff.logoff(ftp)
                         if logout_resp[0] == True:
-                            print(logout_resp[1])
+                            printSuccess(logout_resp[1])
                         else:
-                            print("Logout failed.")
+                            printFailed("Logout failed. Server response: " + logout_resp[1])
 
                     # If login was unsuccessful, display error message
                     else:
-                        print("Error! Failed to log into server")
-                        print("Response: " + str(serverResponse[1])) 
-                        print()
                         # If connection failed display error
+                        printFailure("Error! Failed to log into server\n" + "Response: " + str(serverResponse[1]))
                 else:
-                    print("Error! Could not connect to '" + ftpAddr + "'")
-                    print("Response: " + str(serverResponse[1]))
+                    printFailure("Error! Could not connect to '" + ftpAddr + "'\n" + "Response: " + str(serverResponse[1]))
             elif (choice.lower() == "q"):
-                print("Quitting...")
-                print()
+                printSuccess("Returning to main menu...")
             else:
                 invalidMenuInput(inputBuf)
 
@@ -838,8 +855,7 @@ Enter your choice:
 
         # Q.  Quit
         elif (opt[1].lower() == "q"):
-            print("Quitting...")
-            print()
+            printSuccess("Quitting...")
         else:
             invalidMenuInput(opt)
         
