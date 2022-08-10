@@ -434,14 +434,28 @@ Enter your choice:
             # Print the title
             title = "Copy directories on remote server"
             printTitle(title)
+            pathGood = False
 
-            toCopy = input("Enter the directory name to copy: ")
-            server_response = copyremotedir.copyDir(ftp, toCopy)
+            try:
+                path = ftp.pwd()
+                pathGood = True
+            except Exception as err:
+                printFailure(str(err))
 
-            if server_response[0]:
-                printSuccess(server_response[1])
-            else:
-                printFailure(server_response[1])
+            if pathGood:
+                toCopy = input("Enter the directory name to copy: ")
+                server_response = copyremotedir.copyDir(ftp, toCopy)
+
+                if server_response[0]:
+                    printSuccess(server_response[1])
+                else:
+                    printFailure(server_response[1])
+                
+            try:
+                resp = ftp.cwd(path)
+            except Exception as err:
+                printFailure(str(err))
+
 
         # 11. Delete directories on remote server
         elif opt[1] == "11":
