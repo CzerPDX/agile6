@@ -44,12 +44,12 @@ import logtostring              # Functions for reading the input-and-errors log
 
 def printSuccess(resp):
     print()
-    print(Fore.BLACK + Back.GREEN + resp + Style.RESET_ALL)
+    print(Fore.BLACK + Back.GREEN + str(resp) + Style.RESET_ALL)
     print()
 
 def printFailure(resp):
     print()
-    print(Fore.BLACK + Back.RED + resp + Style.RESET_ALL)
+    print(Fore.BLACK + Back.RED + str(resp) + Style.RESET_ALL)
     print()
 
 def printTitle(title):

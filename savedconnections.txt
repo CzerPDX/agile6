@@ -1,3 +1,4 @@
 real login,ftptest.portlandredbird.com,testacct@ftptest.portlandredbird.com
 new connection,ftptest.portlandredbird.com,testacct@ftptest.portlandredbird.com
 New connection info,ftptest.portlandredbird.com,testacct@ftptest.portlandredbird.com
+FOR DEMO NEW CONNECTION,ftptest.portlandredbird.com,testacct@ftptest.portlandredbird.com
